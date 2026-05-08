@@ -1,13 +1,14 @@
 "use server";
 
+import { api } from "@/lib/axios";
 import { IAuthProps } from "@/types/api.types";
-import axios from "axios";
+import { IUserProfile } from "@/types/user.types";
 
 const dbPath = `${process.env.DB_BASE}:${process.env.DB_PORT}`;
 
 export async function registerUser(userData: IAuthProps) {
     try {
-        const resp = await axios.post(dbPath + "/auth/register", userData);
+        const resp = await api.post(dbPath + "/auth/register", userData);
         console.log(resp.data);
         if (resp.status === 201 && resp.data) {
             return resp.data;
@@ -25,14 +26,13 @@ export async function registerUser(userData: IAuthProps) {
 }
 export async function loginUser(userData: Omit<IAuthProps, "name">) {
     try {
-        const resp = await axios.post(dbPath + "/auth/login", userData);
-        console.log(resp.data);
+        const resp = await api.post(dbPath + "/auth/login", userData);
         if (resp.status === 200 && resp.data) {
             return resp.data;
         } else
             throw new Error(
                 "errors" in resp.data
-                    ? (resp.data.errors[0] as [])
+                    ? resp.data.errors[0]
                     : "message" in resp.data
                       ? resp.data.message
                       : "Unhandled error",
@@ -42,5 +42,30 @@ export async function loginUser(userData: Omit<IAuthProps, "name">) {
     }
 }
 
-export async function getUserProfile() {}
+export async function getUserProfile(token?: string) {
+    try {
+        const resp = await api.get(dbPath + "/profile", {
+            headers: token
+                ? {
+                      Authorization: `Bearer ${token}`,
+                  }
+                : undefined,
+        });
+        console.log(resp.data);
+        if (resp.status === 200 && resp.data) {
+            return resp.data.data as IUserProfile;
+        }
+
+        throw new Error(
+            "errors" in resp.data
+                ? resp.data.errors[0]
+                : "message" in resp.data
+                  ? resp.data.message
+                  : "Unhandled error",
+        );
+    } catch (e) {
+        console.error(e);
+        throw e;
+    }
+}
 export async function setUserProfile() {}
