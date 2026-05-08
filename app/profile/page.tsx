@@ -1,9 +1,9 @@
 "use client";
+import EditProfileModal from "@/components/EditProfileModal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useUserStore } from "@/stores/user.store";
-import { ArrowLeft, Pencil } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 
@@ -44,9 +44,7 @@ export default function Profile() {
                                 {user.name}
                             </p>
                         </div>
-                        <Button>
-                            <Pencil /> Edit profile
-                        </Button>
+                        <EditProfileModal />
                     </div>
                 </Card>
                 <div className="w-full grid grid-cols-2 gap-8">

@@ -1,7 +1,7 @@
 "use server";
 
 import { api } from "@/lib/axios";
-import { IAuthProps } from "@/types/api.types";
+import { IAuthProps, IUpdateUserResponse } from "@/types/api.types";
 import { IUpdateProfileData, IUserProfile } from "@/types/user.types";
 
 const dbPath = `${process.env.DB_BASE}:${process.env.DB_PORT}`;
@@ -42,7 +42,7 @@ export async function loginUser(userData: Omit<IAuthProps, "name">) {
     }
 }
 
-export async function getUserProfile(token?: string) {
+export async function getUserProfile(token: string) {
     try {
         const resp = await api.get(dbPath + "/profile", {
             headers: token
@@ -70,7 +70,7 @@ export async function getUserProfile(token?: string) {
 
 export async function updateUserProfile(
     data: IUpdateProfileData,
-    token?: string,
+    token: string,
 ) {
     const formData = new FormData();
 
@@ -98,13 +98,11 @@ export async function updateUserProfile(
         formData.append("background", data.background);
     }
 
-    const resp = await api.post("/profile/profile-edit", formData, {
-        headers: token
-            ? {
-                  Authorization: `Bearer ${token}`,
-              }
-            : undefined,
+    const resp = await api.post(dbPath + "/profile/profile-edit", formData, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
     });
 
-    return resp.data;
+    return resp.data as IUpdateUserResponse;
 }

@@ -13,7 +13,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { clearUser, setUser } = useUserStore();
 
     useEffect(() => {
-        console.log("123");
         async function bootstrap() {
             if (!isHydrated) return;
 
