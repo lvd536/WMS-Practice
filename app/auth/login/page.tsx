@@ -19,7 +19,9 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { loginUser } from "@/actions/user.actions";
+import { getUserProfile, loginUser } from "@/actions/user.actions";
+import { useUserStore } from "@/stores/user.store";
+import { useAuthStore } from "@/stores/auth.store";
 
 const formSchema = z.object({
     email: z.email().min(1, { message: "Email is required" }),
@@ -40,26 +42,33 @@ export default function Login() {
             password: "",
         },
     });
+    const { login } = useAuthStore();
+    const { setUser } = useUserStore();
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        const resp = await loginUser({
-            email: data.email,
-            password: data.password,
-        });
-        console.log(resp);
-        toast("You submitted the following values:", {
-            description: (
-                <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-                    <code>{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-            position: "bottom-right",
-            classNames: {
-                content: "flex flex-col gap-2",
+        toast.promise<{ name: string }>(
+            () =>
+                new Promise(async (resolve) => {
+                    const resp = await loginUser({
+                        email: data.email,
+                        password: data.password,
+                    });
+                    if ("token" in resp) {
+                        resolve({ name: resp.token });
+                    }
+                }),
+            {
+                loading: "Log in...",
+                success: async (data) => {
+                    login(data.name);
+                    const user = await getUserProfile(data.name);
+                    if (user) {
+                        setUser(user);
+                    } else return "Cannot get user info, try later";
+                    return "Success log in!";
+                },
+                error: "Login error",
             },
-            style: {
-                "--border-radius": "calc(var(--radius)  + 4px)",
-            } as React.CSSProperties,
-        });
+        );
     }
     return (
         <Card className="w-full sm:max-w-md mx-auto mt-10">

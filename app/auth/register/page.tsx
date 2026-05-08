@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { registerUser } from "@/actions/user.actions";
+import { getUserProfile, registerUser } from "@/actions/user.actions";
 
 const formSchema = z.object({
     fullName: z
@@ -54,25 +54,24 @@ export default function Register() {
         },
     });
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        const resp = await registerUser({
-            name: data.fullName,
-            email: data.email,
-            password: data.password,
-        });
-        toast("You submitted the following values:", {
-            description: (
-                <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-code p-4 text-code-foreground">
-                    <code>{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-            position: "bottom-right",
-            classNames: {
-                content: "flex flex-col gap-2",
+        toast.promise<{ name: string }>(
+            () =>
+                new Promise(async (resolve) => {
+                    const resp = await registerUser({
+                        name: data.fullName,
+                        email: data.email,
+                        password: data.password,
+                    });
+                    if ("success" in resp) {
+                        resolve({ name: "Success register" });
+                    }
+                }),
+            {
+                loading: "Register your account...",
+                success: (data) => data.name,
+                error: "Register error",
             },
-            style: {
-                "--border-radius": "calc(var(--radius)  + 4px)",
-            } as React.CSSProperties,
-        });
+        );
     }
     return (
         <Card className="w-full sm:max-w-md mx-auto mt-10">
