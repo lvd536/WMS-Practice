@@ -2,7 +2,7 @@
 
 import { api } from "@/lib/axios";
 import { IAuthProps } from "@/types/api.types";
-import { IUserProfile } from "@/types/user.types";
+import { IUpdateProfileData, IUserProfile } from "@/types/user.types";
 
 const dbPath = `${process.env.DB_BASE}:${process.env.DB_PORT}`;
 
@@ -51,7 +51,6 @@ export async function getUserProfile(token?: string) {
                   }
                 : undefined,
         });
-        console.log(resp.data);
         if (resp.status === 200 && resp.data) {
             return resp.data.data as IUserProfile;
         }
@@ -68,4 +67,44 @@ export async function getUserProfile(token?: string) {
         throw e;
     }
 }
-export async function setUserProfile() {}
+
+export async function updateUserProfile(
+    data: IUpdateProfileData,
+    token?: string,
+) {
+    const formData = new FormData();
+
+    if (data.name) {
+        formData.append("name", data.name);
+    }
+
+    if (data.email) {
+        formData.append("email", data.email);
+    }
+
+    if (data.phone) {
+        formData.append("phone", data.phone);
+    }
+
+    if (data.about) {
+        formData.append("about", data.about);
+    }
+
+    if (data.avatar) {
+        formData.append("avatar", data.avatar);
+    }
+
+    if (data.background) {
+        formData.append("background", data.background);
+    }
+
+    const resp = await api.post("/profile/profile-edit", formData, {
+        headers: token
+            ? {
+                  Authorization: `Bearer ${token}`,
+              }
+            : undefined,
+    });
+
+    return resp.data;
+}
