@@ -19,29 +19,39 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { getUserProfile, registerUser } from "@/actions/user.actions";
+import { registerUser } from "@/actions/user.actions";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-const formSchema = z.object({
-    fullName: z
-        .string()
-        .min(2, "Fullname must be at least 5 characters.")
-        .max(24, "Fullname must be at most 32 characters."),
-    email: z.email().min(1, { message: "Email is required" }),
-    password: z
-        .string()
-        .min(8, { message: "Password must be at least 8 characters" })
-        .regex(/[A-Z]/, {
-            message: "Must contain at least one uppercase letter",
-        })
-        .regex(/[0-9]/, { message: "Must contain at least one number" }),
-    confirmPassword: z
-        .string()
-        .min(8, { message: "Password must be at least 8 characters" })
-        .regex(/[A-Z]/, {
-            message: "Must contain at least one uppercase letter",
-        })
-        .regex(/[0-9]/, { message: "Must contain at least one number" }),
-});
+const formSchema = z
+    .object({
+        fullName: z
+            .string()
+            .min(2, "Fullname must be at least 2 characters.")
+            .max(24, "Fullname must be at most 24 characters."),
+
+        email: z.email().min(1, { message: "Email is required" }),
+
+        password: z
+            .string()
+            .min(8, {
+                message: "Password must be at least 8 characters",
+            })
+            .regex(/[A-Z]/, {
+                message: "Must contain at least one uppercase letter",
+            })
+            .regex(/[0-9]/, {
+                message: "Must contain at least one number",
+            }),
+
+        confirmPassword: z.string().min(8, {
+            message: "Password must be at least 8 characters",
+        }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+        message: "Passwords do not match",
+        path: ["confirmPassword"],
+    });
 
 export default function Register() {
     const form = useForm<z.infer<typeof formSchema>>({
@@ -53,6 +63,7 @@ export default function Register() {
             confirmPassword: "",
         },
     });
+    const router = useRouter();
     async function onSubmit(data: z.infer<typeof formSchema>) {
         toast.promise<{ name: string }>(
             () =>
@@ -75,29 +86,30 @@ export default function Register() {
     }
     return (
         <Card className="w-full sm:max-w-md mx-auto mt-10">
-            <CardHeader>
-                <CardTitle>Registor form</CardTitle>
-                <CardDescription>
-                    Create your own account and start exploring new experience
-                </CardDescription>
+            <CardHeader className="flex flex-col items-center justify-center">
+                <CardTitle className="font-bold text-2xl leading-[150%] tracking-[-0.03em] text-[#3525cd]">
+                    WMS
+                </CardTitle>
+                <CardDescription>Create account</CardDescription>
             </CardHeader>
             <CardContent>
-                <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+                <form id="register-form" onSubmit={form.handleSubmit(onSubmit)}>
                     <FieldGroup>
                         <Controller
                             name="fullName"
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="form-rhf-demo-title">
+                                    <FieldLabel htmlFor="full-name">
                                         Fullname
                                     </FieldLabel>
                                     <Input
                                         {...field}
-                                        id="form-rhf-demo-title"
+                                        id="full-name"
                                         aria-invalid={fieldState.invalid}
                                         placeholder="John Doe"
                                         autoComplete="off"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -112,16 +124,17 @@ export default function Register() {
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="form-rhf-demo-title">
+                                    <FieldLabel htmlFor="email">
                                         Email
                                     </FieldLabel>
                                     <Input
                                         {...field}
-                                        id="form-rhf-demo-title"
+                                        id="email"
                                         type="email"
                                         aria-invalid={fieldState.invalid}
                                         placeholder="example@gmail.com"
                                         autoComplete="off"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -136,16 +149,17 @@ export default function Register() {
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="form-rhf-demo-title">
+                                    <FieldLabel htmlFor="password">
                                         Password
                                     </FieldLabel>
                                     <Input
                                         {...field}
-                                        id="form-rhf-demo-title"
+                                        id="password"
                                         type="password"
                                         aria-invalid={fieldState.invalid}
                                         placeholder="●●●●●●●●"
                                         autoComplete="off"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -160,16 +174,17 @@ export default function Register() {
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="form-rhf-demo-title">
+                                    <FieldLabel htmlFor="confirm-password">
                                         Confirm Password
                                     </FieldLabel>
                                     <Input
                                         {...field}
-                                        id="form-rhf-demo-title"
+                                        id="confirm-password"
                                         type="password"
                                         aria-invalid={fieldState.invalid}
                                         placeholder="●●●●●●●●"
                                         autoComplete="off"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -180,21 +195,25 @@ export default function Register() {
                             )}
                         />
                     </FieldGroup>
+                    <Button
+                        type="submit"
+                        form="login-form"
+                        className="mt-8 w-full shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] py-2.5 h-fit leading-[150%] tracking-wider uppercase text-center text-white"
+                    >
+                        Create Account
+                    </Button>
                 </form>
             </CardContent>
             <CardFooter>
-                <Field orientation="horizontal">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => form.reset()}
-                    >
-                        Reset
-                    </Button>
-                    <Button type="submit" form="form-rhf-demo">
-                        Register
-                    </Button>
-                </Field>
+                <Button
+                    type="button"
+                    variant="ghost"
+                    className="font-medium text-sm text-center text-[#464555] mx-auto"
+                    onClick={() => router.push("/auth/login")}
+                >
+                    <ArrowLeft />
+                    Back to Login
+                </Button>
             </CardFooter>
         </Card>
     );

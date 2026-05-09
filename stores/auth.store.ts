@@ -19,8 +19,15 @@ export const useAuthStore = create<IAuthStore>()(
             token: null,
             isAuthenticated: false,
             isHydrated: false,
-            login: (token) => set({ token: token, isAuthenticated: true }),
-            logout: () => set({ isAuthenticated: false, token: null }),
+            login: (token) => {
+                set({ token: token, isAuthenticated: true });
+                document.cookie = `token=${token}; path=/`;
+            },
+            logout: () => {
+                set({ isAuthenticated: false, token: null });
+                document.cookie =
+                    "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            },
             setHydrated: (value) => set({ isHydrated: value }),
         }),
         {

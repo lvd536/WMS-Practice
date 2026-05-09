@@ -22,6 +22,8 @@ import { Button } from "@/components/ui/button";
 import { getUserProfile, loginUser } from "@/actions/user.actions";
 import { useUserStore } from "@/stores/user.store";
 import { useAuthStore } from "@/stores/auth.store";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
     email: z.email().min(1, { message: "Email is required" }),
@@ -44,6 +46,7 @@ export default function Login() {
     });
     const { login } = useAuthStore();
     const { setUser } = useUserStore();
+    const router = useRouter();
     async function onSubmit(data: z.infer<typeof formSchema>) {
         toast.promise<{ name: string }>(
             () =>
@@ -72,28 +75,31 @@ export default function Login() {
     }
     return (
         <Card className="w-full sm:max-w-md mx-auto mt-10">
-            <CardHeader>
-                <CardTitle>Login form</CardTitle>
+            <CardHeader className="flex flex-col items-center justify-center">
+                <CardTitle className="font-bold text-2xl leading-[150%] tracking-[-0.03em] text-[#3525cd]">
+                    WMS
+                </CardTitle>
                 <CardDescription>Login into your account</CardDescription>
             </CardHeader>
             <CardContent>
-                <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+                <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
                     <FieldGroup>
                         <Controller
                             name="email"
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="form-rhf-demo-title">
+                                    <FieldLabel htmlFor="email">
                                         Email
                                     </FieldLabel>
                                     <Input
                                         {...field}
-                                        id="form-rhf-demo-title"
+                                        id="email"
                                         type="email"
                                         aria-invalid={fieldState.invalid}
                                         placeholder="example@gmail.com"
                                         autoComplete="off"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -108,16 +114,17 @@ export default function Login() {
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <Field data-invalid={fieldState.invalid}>
-                                    <FieldLabel htmlFor="form-rhf-demo-title">
+                                    <FieldLabel htmlFor="password">
                                         Password
                                     </FieldLabel>
                                     <Input
                                         {...field}
-                                        id="form-rhf-demo-title"
+                                        id="password"
                                         type="password"
                                         aria-invalid={fieldState.invalid}
                                         placeholder="●●●●●●●●"
                                         autoComplete="off"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -128,21 +135,25 @@ export default function Login() {
                             )}
                         />
                     </FieldGroup>
+                    <Button
+                        type="submit"
+                        form="login-form"
+                        className="mt-8 w-full shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] py-2.5 h-fit leading-[150%] tracking-wider uppercase text-center text-white"
+                    >
+                        Login
+                    </Button>
                 </form>
             </CardContent>
             <CardFooter>
-                <Field orientation="horizontal">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => form.reset()}
-                    >
-                        Reset
-                    </Button>
-                    <Button type="submit" form="form-rhf-demo">
-                        Login
-                    </Button>
-                </Field>
+                <Button
+                    type="button"
+                    variant="ghost"
+                    className="font-medium text-sm text-center text-[#464555] mx-auto"
+                    onClick={() => router.push("/auth/register")}
+                >
+                    <ArrowLeft />
+                    Back to Register
+                </Button>
             </CardFooter>
         </Card>
     );
