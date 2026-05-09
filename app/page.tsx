@@ -6,12 +6,12 @@ import { Card } from "@/components/ui/card";
 import { useUserStore } from "@/stores/user.store";
 import { ArrowLeft, Box } from "lucide-react";
 import { Link } from "next-view-transitions";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
     const user = useUserStore((s) => s.user);
-    const router = useRouter();
+
     if (!user || !user.email || !user.name) return <div>Unauthorized</div>;
+    
     return (
         <div className="flex flex-col w-full h-screen items-center justify-center container">
             <div className="flex w-full items-center justify-between">
