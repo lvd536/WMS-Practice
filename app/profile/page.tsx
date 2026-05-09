@@ -2,8 +2,14 @@
 import EditProfileModal from "@/components/EditProfileModal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
+import {
+    Field,
+    FieldContent,
+    FieldGroup,
+    FieldLabel,
+} from "@/components/ui/field";
 import { useUserStore } from "@/stores/user.store";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Phone, SquareUser, User } from "lucide-react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 
@@ -25,8 +31,10 @@ export default function Profile() {
                         {user.background_url && (
                             <Image
                                 src={user.background_url}
-                                alt="Avatar image"
-                                className="w-full h-full"
+                                alt="Background image"
+                                width={1280}
+                                height={720}
+                                className="w-full h-full object-cover"
                             />
                         )}
                     </div>
@@ -49,14 +57,48 @@ export default function Profile() {
                 </Card>
                 <div className="w-full grid grid-cols-2 gap-8">
                     <Card className="p-8 shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] border-solid border-[#c7c4d8]">
-                        <h1 className="font-semibold text-xl leading-[140%] text-foreground border-b-[#c7c4d8] border-b border-solid pb-2">
-                            Personal Info
+                        <h1 className="flex items-center gap-2 font-semibold text-xl leading-[140%] text-foreground border-b-[#c7c4d8] border-b border-solid pb-2">
+                            <User className="w-5 stroke-[#3525cd]" /> Personal
+                            Info
                         </h1>
+                        <FieldGroup>
+                            <Field>
+                                <FieldLabel className="leading-[150%] tracking-wider uppercase text-[#464555]">
+                                    Full name
+                                </FieldLabel>
+                                <FieldContent>{user.name}</FieldContent>
+                            </Field>
+                            <Field>
+                                <FieldLabel className="leading-[150%] tracking-wider uppercase text-[#464555]">
+                                    Email
+                                </FieldLabel>
+                                <FieldContent>{user.email}</FieldContent>
+                            </Field>
+                            {user.about && (
+                                <Field>
+                                    <FieldLabel className="leading-[150%] tracking-wider uppercase text-[#464555]">
+                                        About
+                                    </FieldLabel>
+                                    <FieldContent>{user.about}</FieldContent>
+                                </Field>
+                            )}
+                        </FieldGroup>
                     </Card>
                     <Card className="p-8 shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] border-solid border-[#c7c4d8]">
-                        <h1 className="font-semibold text-xl leading-[140%] text-foreground border-b-[#c7c4d8] border-b border-solid pb-2">
+                        <h1 className="flex items-center gap-2 font-semibold text-xl leading-[140%] text-foreground border-b-[#c7c4d8] border-b border-solid pb-2">
+                            <SquareUser className="w-5 stroke-[#a04100]" />
                             Contact Info
                         </h1>
+                        {user.phone && (
+                            <Field>
+                                <FieldLabel className="leading-[150%] tracking-wider uppercase text-[#464555]">
+                                    Mobile Phone
+                                </FieldLabel>
+                                <FieldContent className="flex flex-row gap-1 items-center">
+                                    <Phone className="w-4" /> {user.phone}
+                                </FieldContent>
+                            </Field>
+                        )}
                     </Card>
                 </div>
             </div>
