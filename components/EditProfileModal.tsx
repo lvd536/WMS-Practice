@@ -118,7 +118,7 @@ export default function EditProfileModal({ triggerClassName }: IProps) {
                     id="edit-profile-form"
                     onSubmit={form.handleSubmit(onSubmit)}
                 >
-                    <DialogHeader>
+                    <DialogHeader className="mb-3">
                         <DialogTitle>Edit profile</DialogTitle>
                         <DialogDescription>
                             Make changes to your profile here. Click save when
