@@ -86,8 +86,6 @@ export default function EditProfileModal({ triggerClassName }: IProps) {
     });
     const token = useAuthStore((s) => s.token);
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        console.log(form.formState.errors);
-        console.log("token" + token);
         toast.promise<{ name: string }>(
             () =>
                 new Promise(async (resolve) => {

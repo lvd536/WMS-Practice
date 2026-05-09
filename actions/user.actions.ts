@@ -9,7 +9,6 @@ const dbPath = `${process.env.DB_BASE}:${process.env.DB_PORT}`;
 export async function registerUser(userData: IAuthProps) {
     try {
         const resp = await api.post(dbPath + "/auth/register", userData);
-        console.log(resp.data);
         if (resp.status === 201 && resp.data) {
             return resp.data;
         } else
