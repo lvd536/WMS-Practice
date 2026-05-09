@@ -28,6 +28,10 @@ import {
 import { Pencil } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
 
+interface IProps {
+    triggerClassName?: string;
+}
+
 const formSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters" }),
     email: z.email().min(1, { message: "Email is required" }),
@@ -69,7 +73,7 @@ const formSchema = z.object({
         ),
 });
 
-export default function EditProfileModal() {
+export default function EditProfileModal({ triggerClassName }: IProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -105,7 +109,7 @@ export default function EditProfileModal() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button>
+                <Button className={triggerClassName}>
                     <Pencil /> Edit profile
                 </Button>
             </DialogTrigger>
