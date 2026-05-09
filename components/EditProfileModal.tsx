@@ -74,13 +74,14 @@ const formSchema = z.object({
 });
 
 export default function EditProfileModal({ triggerClassName }: IProps) {
+    const user = useUserStore((s) => s.user);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            email: "",
-            about: "",
-            phone: "",
+            name: user?.name ?? "",
+            email: user?.email ?? "",
+            about: user?.about ?? "",
+            phone: user?.phone ?? "",
         },
     });
     const token = useAuthStore((s) => s.token);
