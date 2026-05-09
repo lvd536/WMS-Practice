@@ -11,9 +11,9 @@ export default function Home() {
     const user = useUserStore((s) => s.user);
 
     if (!user || !user.email || !user.name) return <div>Unauthorized</div>;
-    
+
     return (
-        <div className="flex flex-col w-full h-screen items-center justify-center container">
+        <div className="flex flex-col w-full mt-2 h-screen items-center container">
             <div className="flex w-full items-center justify-between">
                 <div className="flex items-center gap-3 font-semibold text-2xl leading-[140%] text-[#0b1c30]">
                     <Box className="w-5.5 stroke-[#3525cd]" /> WMS Dashboard
