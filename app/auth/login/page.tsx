@@ -48,28 +48,37 @@ export default function Login() {
     const { setUser } = useUserStore();
     const router = useRouter();
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        toast.promise<{ name: string }>(
-            () =>
-                new Promise(async (resolve) => {
-                    const resp = await loginUser({
-                        email: data.email,
-                        password: data.password,
-                    });
-                    if ("token" in resp) {
-                        resolve({ name: resp.token });
-                    }
-                }),
+        toast.promise(
+            async () => {
+                const resp = await loginUser({
+                    email: data.email,
+                    password: data.password,
+                });
+
+                if ("error" in resp! || !resp?.user) {
+                    throw new Error(
+                        "error" in resp! ? resp.error : "Can't login user now",
+                    );
+                }
+
+                return {
+                    id: resp.user.id,
+                    rawResponse: resp,
+                };
+            },
             {
                 loading: "Log in...",
-                success: async (data) => {
-                    login(data.name);
-                    const user = await getUserProfile(data.name);
-                    if (user) {
-                        setUser(user);
-                    } else return "Cannot get user info, try later";
-                    return "Success log in!";
+                success: async (result) => {
+                    const profile = await getUserProfile(result.id);
+
+                    if (result.rawResponse.user && !("error" in profile)) {
+                        setUser(profile);
+                        login(result.rawResponse.user);
+                        return "Success log in!";
+                    }
+                    return "Cannot get user info, try later";
                 },
-                error: "Login error",
+                error: (err) => err.message || "Login error",
             },
         );
     }

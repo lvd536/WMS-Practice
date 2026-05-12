@@ -19,9 +19,11 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { registerUser } from "@/actions/user.actions";
+import { getUser, getUserProfile, registerUser } from "@/actions/user.actions";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/auth.store";
+import { useUserStore } from "@/stores/user.store";
 
 const formSchema = z
     .object({
@@ -63,24 +65,43 @@ export default function Register() {
             confirmPassword: "",
         },
     });
+    const { login } = useAuthStore();
+    const { setUser } = useUserStore();
     const router = useRouter();
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        toast.promise<{ name: string }>(
-            () =>
-                new Promise(async (resolve) => {
-                    const resp = await registerUser({
-                        name: data.fullName,
-                        email: data.email,
-                        password: data.password,
-                    });
-                    if ("success" in resp) {
-                        resolve({ name: "Success register" });
-                    }
-                }),
+        toast.promise(
+            async () => {
+                const resp = await registerUser({
+                    email: data.email,
+                    password: data.password,
+                });
+
+                if ("error" in resp! || !resp?.user) {
+                    throw new Error(
+                        "error" in resp!
+                            ? resp.error
+                            : "Can't register user now",
+                    );
+                }
+
+                return {
+                    id: resp.user.id,
+                    rawResponse: resp,
+                };
+            },
             {
                 loading: "Register your account...",
-                success: (data) => data.name,
-                error: "Register error",
+                success: async (result) => {
+                    const profile = await getUserProfile(result.id);
+
+                    if (result.rawResponse.user && !("error" in profile)) {
+                        setUser(profile);
+                        login(result.rawResponse.user);
+                        return "Success register!";
+                    }
+                    return "Cannot get user info, try later";
+                },
+                error: (err) => err.message || "Register error",
             },
         );
     }
@@ -197,7 +218,7 @@ export default function Register() {
                     </FieldGroup>
                     <Button
                         type="submit"
-                        form="login-form"
+                        form="register-form"
                         className="mt-8 w-full shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] py-2.5 h-fit leading-[150%] tracking-wider uppercase text-center text-white"
                     >
                         Create Account
