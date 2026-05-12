@@ -3,14 +3,16 @@ import EditProfileModal from "@/components/EditProfileModal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useAuthStore } from "@/stores/auth.store";
 import { useUserStore } from "@/stores/user.store";
 import { ArrowLeft, Box } from "lucide-react";
 import { Link } from "next-view-transitions";
 
 export default function Home() {
     const user = useUserStore((s) => s.user);
+    const email = useAuthStore((s) => s.user?.email);
 
-    if (!user || !user.email || !user.name) return <div>Unauthorized</div>;
+    if (!user || !email || !user.name) return <div>Unauthorized</div>;
 
     return (
         <div className="flex flex-col w-full mt-2 h-screen items-center container">
@@ -20,8 +22,8 @@ export default function Home() {
                 </div>
                 <Link href="/profile">
                     <Avatar>
-                        <AvatarImage src={user?.avatar_url ?? undefined} />
-                        <AvatarFallback className="text-3xl">
+                        <AvatarImage src={user?.avatar_path ?? undefined} />
+                        <AvatarFallback>
                             {user.name.slice(0, 2).toUpperCase()}
                         </AvatarFallback>
                     </Avatar>
@@ -48,7 +50,7 @@ export default function Home() {
                         My Profile
                     </h1>
                     <p className="font-normal text-base leading-[160%] text-[#464555]">
-                        {`${user.name} | ${user.email} ${user.phone && `| ${user.phone}`}`}
+                        {`${user.name} | ${email} ${user.phone ? `| ${user.phone}` : ""}`}
                     </p>
                     <EditProfileModal triggerClassName="self-start p-2 px-3 h-fit shadow-[inset_0_1px_0_0_rgba(255,255,255,0.3)] bg-[#fe6b00] text-foreground" />
                 </Card>

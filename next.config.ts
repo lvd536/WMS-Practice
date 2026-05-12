@@ -5,10 +5,10 @@ const nextConfig: NextConfig = {
         dangerouslyAllowLocalIP: true,
         remotePatterns: [
             {
-                protocol: "http",
-                hostname: "localhost",
-                port: "4000",
-                pathname: "/uploads/**",
+                protocol: "https",
+                hostname: "neupautbsdznacwkymze.supabase.co",
+                port: "",
+                pathname: "/storage/v1/object/public/**",
             },
         ],
     },
