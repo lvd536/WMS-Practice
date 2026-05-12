@@ -8,6 +8,7 @@ import {
     FieldGroup,
     FieldLabel,
 } from "@/components/ui/field";
+import { useAuthStore } from "@/stores/auth.store";
 import { useUserStore } from "@/stores/user.store";
 import { ArrowLeft, Phone, SquareUser, User } from "lucide-react";
 import { Link } from "next-view-transitions";
@@ -15,7 +16,9 @@ import Image from "next/image";
 
 export default function Profile() {
     const { user } = useUserStore();
-    if (!user || !user.name || !user.email)
+    const email = useAuthStore((s) => s.user?.email);
+
+    if (!user || !user.name || !email)
         return <div>Error while loading profile</div>;
     return (
         <div>
@@ -28,9 +31,9 @@ export default function Profile() {
             <div className="w-full flex flex-col gap-8 items-center justify-between mt-8 container mx-auto">
                 <Card className="relative w-full h-90 pt-0! shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] border-solid border-[#c7c4d8]">
                     <div className="w-full h-1/2 bg-stone-400">
-                        {user.background_url && (
+                        {user.background_path && (
                             <Image
-                                src={user.background_url}
+                                src={user.background_path}
                                 alt="Background image"
                                 width={1280}
                                 height={720}
@@ -42,7 +45,7 @@ export default function Profile() {
                         <div className="flex flex-col gap-8 items-start">
                             <Avatar className="w-32 h-32  border-4 border-solid border-white">
                                 <AvatarImage
-                                    src={user.avatar_url ?? undefined}
+                                    src={user.avatar_path ?? undefined}
                                 />
                                 <AvatarFallback className="text-3xl">
                                     {user.name.slice(0, 2).toUpperCase()}
@@ -72,7 +75,7 @@ export default function Profile() {
                                 <FieldLabel className="leading-[150%] tracking-wider uppercase text-[#464555]">
                                     Email
                                 </FieldLabel>
-                                <FieldContent>{user.email}</FieldContent>
+                                <FieldContent>{email}</FieldContent>
                             </Field>
                             {user.about && (
                                 <Field>

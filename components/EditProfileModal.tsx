@@ -34,7 +34,6 @@ interface IProps {
 
 const formSchema = z.object({
     name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-    email: z.email().min(1, { message: "Email is required" }),
     phone: z
         .string()
         .min(5, {
@@ -74,34 +73,75 @@ const formSchema = z.object({
 });
 
 export default function EditProfileModal({ triggerClassName }: IProps) {
-    const user = useUserStore((s) => s.user);
+    const profile = useUserStore((s) => s.user);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: user?.name ?? "",
-            email: user?.email ?? "",
-            about: user?.about ?? "",
-            phone: user?.phone ?? "",
+            name: profile?.name ?? "",
+            about: profile?.about ?? "",
+            phone: profile?.phone ?? "",
         },
     });
-    const token = useAuthStore((s) => s.token);
+    const user = useAuthStore((s) => s.user);
     async function onSubmit(data: z.infer<typeof formSchema>) {
         toast.promise<{ name: string }>(
             () =>
-                new Promise(async (resolve) => {
-                    const updated = await updateUserProfile(data, token!);
-                    if (updated.success) {
-                        resolve({ name: "Your profile successfully updated" });
+                new Promise(async (resolve, reject) => {
+                    try {
+                        if (!user) {
+                            reject(new Error("User is not defined"));
+                            return;
+                        }
+
+                        const updated = await updateUserProfile(data, user.id);
+
+                        if (updated.status === "success") {
+                            resolve({
+                                name: "Your profile successfully updated",
+                            });
+                        } else {
+                            reject(
+                                new Error(
+                                    updated.error?.message ||
+                                        "Failed to update profile",
+                                ),
+                            );
+                        }
+                    } catch (error) {
+                        reject(
+                            error instanceof Error
+                                ? error
+                                : new Error("Unknown error occurred"),
+                        );
                     }
                 }),
             {
                 loading: "Updating profile...",
                 success: async (data) => {
-                    const profile = await getUserProfile(token!);
-                    useUserStore.getState().setUser(profile);
-                    return data.name;
+                    try {
+                        if (!user) {
+                            throw new Error("User is not defined");
+                        }
+
+                        const profile = await getUserProfile(user.id);
+
+                        if (!("error" in profile)) {
+                            useUserStore.getState().setUser(profile);
+                            return data.name;
+                        } else {
+                            throw new Error(profile.error.message);
+                        }
+                    } catch (error) {
+                        console.error("Error fetching updated profile:", error);
+                        return "Profile updated but failed to refresh data";
+                    }
                 },
-                error: "Profile update error",
+                error: (error) => {
+                    if (error instanceof Error) {
+                        return error.message;
+                    }
+                    return "Profile update error";
+                },
             },
         );
     }
@@ -137,28 +177,6 @@ export default function EditProfileModal({ triggerClassName }: IProps) {
                                         type="text"
                                         aria-invalid={fieldState.invalid}
                                         placeholder="John Doe"
-                                        autoComplete="off"
-                                    />
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </Field>
-                            )}
-                        />
-                        <Controller
-                            name="email"
-                            control={form.control}
-                            render={({ field, fieldState }) => (
-                                <Field data-invalid={fieldState.invalid}>
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input
-                                        {...field}
-                                        id="email"
-                                        type="email"
-                                        aria-invalid={fieldState.invalid}
-                                        placeholder="example@gmail.com"
                                         autoComplete="off"
                                     />
                                     {fieldState.invalid && (
@@ -282,7 +300,7 @@ export default function EditProfileModal({ triggerClassName }: IProps) {
                             )}
                         />
                     </FieldGroup>
-                    <DialogFooter>
+                    <DialogFooter className="mt-2">
                         <DialogClose asChild>
                             <Button variant="outline">Cancel</Button>
                         </DialogClose>
