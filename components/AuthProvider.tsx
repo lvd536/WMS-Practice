@@ -1,40 +1,68 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { useAuthStore } from "@/stores/auth.store";
 import { useUserStore } from "@/stores/user.store";
 
 import { getUserProfile } from "@/actions/user.actions";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const { token, isHydrated, logout } = useAuthStore();
+    const { logout } = useAuthStore();
 
     const { clearUser, setUser } = useUserStore();
+    const { login } = useAuthStore();
+    const supabase = createClient();
     const router = useRouter();
 
+    const lastSessionId = useRef<string | null>(null);
+
     useEffect(() => {
-        async function bootstrap() {
-            if (!isHydrated) return;
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange(async (event, session) => {
+            if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+                if (!session) {
+                    clearUser();
+                    logout();
+                    return;
+                }
 
-            if (!token) {
-                clearUser();
-                router.push("/auth/login");
-                return;
+                if (lastSessionId.current === session.user.id) return;
+                lastSessionId.current = session.user.id;
+
+                if (!session.user.email_confirmed_at) {
+                    router.push("/auth/confirm-email");
+                    return;
+                }
+
+                const profile = await getUserProfile(session.user.id);
+                if ("error" in profile) {
+                    console.error(profile.error);
+                } else {
+                    setUser(profile);
+                    login(session.user);
+                }
             }
-            try {
-                const profile = await getUserProfile(token);
-                setUser(profile);
-            } catch {
+
+            if (event === "SIGNED_OUT") {
+                lastSessionId.current = null;
+                clearUser();
                 logout();
-                clearUser();
                 router.push("/auth/login");
             }
-        }
 
-        bootstrap();
-    }, [token, isHydrated, logout, clearUser, setUser, router]);
+            if (event === "PASSWORD_RECOVERY") {
+                router.push("/auth/reset-password");
+            }
+        });
 
-    return children;
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [clearUser, logout, setUser, router, login, supabase.auth]);
+
+    return <>{children}</>;
 }
