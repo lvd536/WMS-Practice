@@ -1,10 +1,12 @@
 export interface IUserProfile {
+    id: string | null;
     name: string | null;
-    email: string | null;
     phone: string | null;
     about: string | null;
-    avatar_url: string | null;
-    background_url?: string | null;
+    avatar_path: string | null;
+    background_path?: string | null;
+    created_at: string;
+    updated_at: string;
 }
 export interface IUpdateProfileData {
     name?: string;
