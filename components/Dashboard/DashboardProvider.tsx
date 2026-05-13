@@ -1,3 +1,5 @@
+"use client";
+
 import { AppSidebar } from "@/components/Dashboard/AppSidebar";
 import {
     SidebarInset,
