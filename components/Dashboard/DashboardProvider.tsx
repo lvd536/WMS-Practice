@@ -21,7 +21,7 @@ export default function DashboardProvider({
             <SidebarInset>
                 <header className="flex h-16 shrink-0 items-center justify-between gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
                     <SidebarTrigger className="-ml-1 px-4" />
-                    <h1 className="flex items-center gap-3 font-semibold text-2xl leading-[140%] text-[#0b1c30]">
+                    <h1 className="flex items-center gap-3 font-semibold text-2xl leading-[140%] text-foreground">
                         WMS Dashboard
                     </h1>
                     <Link href="/profile">
