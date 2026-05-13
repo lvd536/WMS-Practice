@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUserStore } from "@/stores/user.store";
-import { ArrowLeft, Box } from "lucide-react";
-import { Link } from "next-view-transitions";
+import { ArrowLeft } from "lucide-react";
 
 export default function Home() {
     const user = useUserStore((s) => s.user);
