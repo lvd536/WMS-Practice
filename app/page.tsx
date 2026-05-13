@@ -1,7 +1,6 @@
 "use client";
 import DashboardProvider from "@/components/Dashboard/DashboardProvider";
 import EditProfileModal from "@/components/EditProfileModal";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuthStore } from "@/stores/auth.store";

@@ -8,9 +8,12 @@ import { useUserStore } from "@/stores/user.store";
 import { getUserProfile } from "@/actions/user.actions";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { getAllOrganizations } from "@/actions/organization.actions";
+import { useOrganizationsStore } from "@/stores/organizations.store";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { logout } = useAuthStore();
+    const { setOrganizations } = useOrganizationsStore();
 
     const { clearUser, setUser } = useUserStore();
     const { login } = useAuthStore();
@@ -39,11 +42,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 }
 
                 const profile = await getUserProfile(session.user.id);
+                const organizations = await getAllOrganizations();
                 if ("error" in profile) {
                     console.error(profile.error);
+                } else if ("error" in organizations) {
+                    console.error(organizations.error);
                 } else {
                     setUser(profile);
                     login(session.user);
+                    setOrganizations(organizations);
                 }
             }
 

@@ -19,52 +19,49 @@ import {
     SidebarHeader,
     SidebarRail,
 } from "@/components/ui/sidebar";
-
-const data = {
-    teams: [
-        {
-            name: "Acme Inc",
-            logo: GalleryVerticalEnd,
-        },
-        {
-            name: "Acme Corp.",
-            logo: AudioWaveform,
-        },
-        {
-            name: "Evil Corp.",
-            logo: Command,
-        },
-    ],
-    navMain: [
-        {
-            title: "Dashboard",
-            url: "/",
-            icon: LayoutDashboard,
-            isActive: true,
-        },
-        {
-            title: "Organizations",
-            url: "#",
-            icon: Building2,
-        },
-        {
-            title: "Warehouses",
-            url: "#",
-            icon: Warehouse,
-        },
-        {
-            title: "Profile",
-            url: "/profile",
-            icon: User,
-        },
-    ],
-};
+import { useOrganizationsStore } from "@/stores/organizations.store";
+import { useAuthStore } from "@/stores/auth.store";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+    const user = useAuthStore((s) => s.user);
+    const currentOrganization = useOrganizationsStore(
+        (s) => s.currentOrganization,
+    );
+    const organizations = useOrganizationsStore((s) => s.organizations);
+
+    const data = {
+        navMain: [
+            {
+                title: "Dashboard",
+                url: "/",
+                icon: LayoutDashboard,
+                isActive: true,
+            },
+            {
+                title: "Organizations",
+                url: "#",
+                icon: Building2,
+                disabled: !user || !organizations || organizations.length < 1,
+            },
+            {
+                title: "Warehouses",
+                url: "#",
+                icon: Warehouse,
+                disabled: !currentOrganization,
+            },
+            {
+                title: "Profile",
+                url: "/profile",
+                icon: User,
+                disabled: !user,
+            },
+        ],
+    };
+
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
-                <OrganizationSwitcher teams={data.teams} />
+                <OrganizationSwitcher />
             </SidebarHeader>
             <SidebarContent>
                 <NavMain items={data.navMain} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, type LucideIcon } from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 
 import {
     SidebarGroup,
@@ -18,10 +18,7 @@ export function NavMain({
         url: string;
         icon?: LucideIcon;
         isActive?: boolean;
-        items?: {
-            title: string;
-            url: string;
-        }[];
+        disabled?: boolean;
     }[];
 }) {
     return (
@@ -33,6 +30,7 @@ export function NavMain({
                         <SidebarMenuButton
                             tooltip={item.title}
                             className="group/collapsible"
+                            disabled={item.disabled}
                         >
                             {item.icon && <item.icon />}
                             <span>{item.title}</span>

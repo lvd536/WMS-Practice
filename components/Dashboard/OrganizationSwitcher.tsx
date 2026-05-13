@@ -1,7 +1,25 @@
 "use client";
 
 import * as React from "react";
-import { ChevronsUpDown, Plus } from "lucide-react";
+import {
+    Building2,
+    BriefcaseBusiness,
+    Boxes,
+    Factory,
+    FolderOpen,
+    Globe,
+    HardHat,
+    Landmark,
+    Layers3,
+    Package,
+    Shield,
+    Store,
+    Truck,
+    Users,
+    Warehouse,
+    ChevronsUpDown,
+    Plus,
+} from "lucide-react";
 
 import {
     DropdownMenu,
@@ -19,18 +37,66 @@ import {
     useSidebar,
 } from "@/components/ui/sidebar";
 
-export function OrganizationSwitcher({
-    teams,
-}: {
-    teams: {
-        name: string;
-        logo: React.ElementType;
-    }[];
-}) {
-    const { isMobile } = useSidebar();
-    const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+import { useOrganizationsStore } from "@/stores/organizations.store";
 
-    if (!activeTeam) return null;
+const ORGANIZATION_ICONS = [
+    Building2,
+    Warehouse,
+    Boxes,
+    Factory,
+    Globe,
+    BriefcaseBusiness,
+    Layers3,
+    Landmark,
+    Store,
+    Shield,
+    Truck,
+    Package,
+    Users,
+    HardHat,
+    FolderOpen,
+];
+
+function hashString(value: string) {
+    let hash = 0;
+    for (let i = 0; i < value.length; i++) {
+        hash = (hash * 31 + value.charCodeAt(i)) | 0;
+    }
+    return Math.abs(hash);
+}
+
+function getOrganizationIconIndex(seed: string) {
+    return hashString(seed) % ORGANIZATION_ICONS.length;
+}
+
+export function OrganizationSwitcher() {
+    const { isMobile } = useSidebar();
+
+    const organizations = useOrganizationsStore((state) => state.organizations);
+
+    const currentOrganization = useOrganizationsStore(
+        (state) => state.currentOrganization,
+    );
+
+    const setCurrentOrganization = useOrganizationsStore(
+        (state) => state.setCurrentOrganization,
+    );
+
+    const activeOrganization = currentOrganization ?? organizations[0];
+
+    React.useEffect(() => {
+        if (!currentOrganization && organizations.length > 0) {
+            setCurrentOrganization(organizations[0]);
+        }
+    }, [organizations, currentOrganization, setCurrentOrganization]);
+
+    if (!activeOrganization) return null;
+
+    const activeIconIndex = getOrganizationIconIndex(
+        String(activeOrganization.id ?? activeOrganization.name),
+    );
+
+    const ActiveIcon = ORGANIZATION_ICONS[activeIconIndex];
 
     return (
         <SidebarMenu>
@@ -54,12 +120,17 @@ export function OrganizationSwitcher({
                                     text-white
                                 "
                             >
-                                <activeTeam.logo className="size-4" />
+                                <ActiveIcon className="size-4" />
                             </div>
 
-                            <span className="truncate font-medium text-slate-100">
-                                {activeTeam.name}
-                            </span>
+                            <div className="grid flex-1 text-left text-sm leading-tight">
+                                <span className="truncate font-medium text-slate-100">
+                                    {activeOrganization.name}
+                                </span>
+                                <span className="truncate text-xs text-slate-400">
+                                    Current organization
+                                </span>
+                            </div>
 
                             <ChevronsUpDown className="ml-auto text-slate-400" />
                         </SidebarMenuButton>
@@ -67,7 +138,7 @@ export function OrganizationSwitcher({
 
                     <DropdownMenuContent
                         className="
-                            w-(--radix-dropdown-menu-trigger-width)
+                            w-[--radix-dropdown-menu-trigger-width]
                             min-w-56
                             rounded-xl
                             border
@@ -86,37 +157,47 @@ export function OrganizationSwitcher({
                             Organizations
                         </DropdownMenuLabel>
 
-                        {teams.map((team) => (
-                            <DropdownMenuItem
-                                key={team.name}
-                                onClick={() => setActiveTeam(team)}
-                                className="
-                                    gap-2
-                                    p-2
-                                    rounded-md
-                                    cursor-pointer
-                                    focus:bg-slate-800
-                                    focus:text-white
-                                    hover:bg-slate-800
-                                    transition-colors
-                                "
-                            >
-                                <div
-                                    className="
-                                        flex size-7 items-center justify-center
-                                        rounded-md
-                                        border border-slate-700
-                                        bg-slate-800
-                                    "
-                                >
-                                    <team.logo className="size-3.5 shrink-0 text-slate-200" />
-                                </div>
+                        {organizations.map((org) => {
+                            const orgIconIndex = getOrganizationIconIndex(
+                                String(org.id ?? org.name),
+                            );
 
-                                <span className="text-slate-100">
-                                    {team.name}
-                                </span>
-                            </DropdownMenuItem>
-                        ))}
+                            const OrgIcon = ORGANIZATION_ICONS[orgIconIndex];
+
+                            const isActive = activeOrganization.id === org.id;
+
+                            return (
+                                <DropdownMenuItem
+                                    key={org.id}
+                                    onClick={() => setCurrentOrganization(org)}
+                                    className={`
+                                        gap-2
+                                        p-2
+                                        rounded-md
+                                        cursor-pointer
+                                        transition-colors
+                                        focus:bg-slate-800
+                                        hover:bg-slate-800
+                                        ${isActive ? "bg-slate-800 text-slate-100" : "text-slate-100"}
+                                    `}
+                                >
+                                    <div
+                                        className="
+                                            flex size-7 items-center justify-center
+                                            rounded-md
+                                            border border-slate-700
+                                            bg-slate-800
+                                        "
+                                    >
+                                        <OrgIcon className="size-3.5 shrink-0 text-slate-200" />
+                                    </div>
+
+                                    <span className="text-slate-100">
+                                        {org.name}
+                                    </span>
+                                </DropdownMenuItem>
+                            );
+                        })}
 
                         <DropdownMenuSeparator className="bg-slate-700" />
 
@@ -129,6 +210,7 @@ export function OrganizationSwitcher({
                                 focus:bg-slate-800
                                 hover:bg-slate-800
                                 transition-colors
+                                text-slate-300
                             "
                         >
                             <div
