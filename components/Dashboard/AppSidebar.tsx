@@ -3,12 +3,12 @@
 import * as React from "react";
 import {
     AudioWaveform,
-    BookOpen,
-    Bot,
+    Building2,
     Command,
     GalleryVerticalEnd,
-    Settings2,
-    SquareTerminal,
+    LayoutDashboard,
+    User,
+    Warehouse,
 } from "lucide-react";
 
 import { NavMain } from "@/components/Dashboard/NavMain";
@@ -25,40 +25,37 @@ const data = {
         {
             name: "Acme Inc",
             logo: GalleryVerticalEnd,
-            plan: "Enterprise",
         },
         {
             name: "Acme Corp.",
             logo: AudioWaveform,
-            plan: "Startup",
         },
         {
             name: "Evil Corp.",
             logo: Command,
-            plan: "Free",
         },
     ],
     navMain: [
         {
             title: "Dashboard",
-            url: "#",
-            icon: SquareTerminal,
+            url: "/",
+            icon: LayoutDashboard,
             isActive: true,
         },
         {
             title: "Organizations",
             url: "#",
-            icon: Bot,
+            icon: Building2,
         },
         {
             title: "Warehouses",
             url: "#",
-            icon: BookOpen,
+            icon: Warehouse,
         },
         {
             title: "Profile",
-            url: "#",
-            icon: Settings2,
+            url: "/profile",
+            icon: User,
         },
     ],
 };
