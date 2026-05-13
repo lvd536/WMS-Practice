@@ -17,21 +17,8 @@ export default function Home() {
 
     return (
         <DashboardProvider>
-            <div className="flex flex-col w-full mt-2 h-screen items-center container">
-                <div className="flex w-full items-center justify-between">
-                    <div className="flex items-center gap-3 font-semibold text-2xl leading-[140%] text-[#0b1c30]">
-                        <Box className="w-5.5 stroke-[#3525cd]" /> WMS Dashboard
-                    </div>
-                    <Link href="/profile">
-                        <Avatar>
-                            <AvatarImage src={user?.avatar_path ?? undefined} />
-                            <AvatarFallback>
-                                {user.name.slice(0, 2).toUpperCase()}
-                            </AvatarFallback>
-                        </Avatar>
-                    </Link>
-                </div>
-                <h1 className="w-full text-start font-bold text-[40px] leading-[120%] tracking-[-0.02em] text-[#0b1c30] mt-12 mb-8">
+            <div className="flex flex-col w-full h-screen items-center container mt-4">
+                <h1 className="w-full text-start font-bold text-3xl leading-[120%] tracking-[-0.02em] text-[#0b1c30] mb-8">
                     Welcome back, {user.name}!
                 </h1>
                 <div className="grid w-full sm:grid-cols-2 gap-6">
