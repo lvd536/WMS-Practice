@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -32,9 +33,11 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} ${geistSans.className} h-full antialiased`}
             >
                 <body>
-                    <main className="min-h-full flex items-center flex-col container mx-auto">
-                        <AuthProvider>{children}</AuthProvider>
-                    </main>
+                    <TooltipProvider>
+                        <main className="min-h-full flex items-center flex-col container mx-auto">
+                            <AuthProvider>{children}</AuthProvider>
+                        </main>
+                    </TooltipProvider>
 
                     <Toaster />
                 </body>
