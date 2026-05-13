@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { useOrganizationsStore } from "@/stores/organizations.store";
 import { IOrganization } from "@/types/organization.types";
 import { Van } from "lucide-react";
 
@@ -6,6 +8,8 @@ interface IProps {
 }
 
 export default function OrganizationListItem({ organization }: IProps) {
+    const { currentOrganization, setCurrentOrganization } =
+        useOrganizationsStore();
     return (
         <li className="flex flex-col relative p-6 backdrop-blur-[20px] shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] bg-white border rounded-xl border-solid border-[rgba(199,196,216,0.5)]">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[rgba(53,37,205,0.05)] rounded-[0_1100px_0_9999px]" />
@@ -23,12 +27,16 @@ export default function OrganizationListItem({ organization }: IProps) {
                     {organization.description}
                 </p>
             )}
-            <button
+            <Button
                 type="button"
                 className="mt-6 self-end shadow-[inset_0_1px_0_0_rgba(255,255,255,0.2)] bg-[#3525cd] px-6 py-2 rounded-lg font-semibold text-[13px] leading-[100%] tracking-wider uppercase text-center text-white"
+                disabled={organization.id === currentOrganization?.id}
+                onClick={() => setCurrentOrganization(organization)}
             >
-                Select
-            </button>
+                {organization.id === currentOrganization?.id
+                    ? "Selected"
+                    : "Select"}
+            </Button>
         </li>
     );
 }

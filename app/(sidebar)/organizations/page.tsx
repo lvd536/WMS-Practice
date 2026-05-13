@@ -3,7 +3,7 @@ import OrganizationListItem from "@/components/Dashboard/Sections/Organizations/
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useOrganizationsStore } from "@/stores/organizations.store";
-import { Plus, Warehouse, Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { useState } from "react";
 
 export default function Organizations() {

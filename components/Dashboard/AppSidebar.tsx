@@ -1,15 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-    AudioWaveform,
-    Building2,
-    Command,
-    GalleryVerticalEnd,
-    LayoutDashboard,
-    User,
-    Warehouse,
-} from "lucide-react";
+import { Building2, LayoutDashboard, User, Warehouse } from "lucide-react";
 
 import { NavMain } from "@/components/Dashboard/NavMain";
 import { OrganizationSwitcher } from "@/components/Dashboard/OrganizationSwitcher";
@@ -39,13 +31,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             },
             {
                 title: "Organizations",
-                url: "#",
+                url: "/organizations",
                 icon: Building2,
                 disabled: !user || !organizations || organizations.length < 1,
             },
             {
                 title: "Warehouses",
-                url: "#",
+                url: `/organizations/organization/${currentOrganization?.id}/warehouses`,
                 icon: Warehouse,
                 disabled: !currentOrganization,
             },
