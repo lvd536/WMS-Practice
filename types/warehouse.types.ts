@@ -24,9 +24,8 @@ export interface IWarehouseProduct {
     width: number;
     height: number;
     weight: number;
-    quanity: number;
+    quantity: number;
     category_id: number;
-    product_categories: ICategory;
     created_at: string;
     updated_at?: string | null;
 }
