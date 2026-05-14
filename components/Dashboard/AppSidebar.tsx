@@ -33,11 +33,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 title: "Organizations",
                 url: "/organizations",
                 icon: Building2,
-                disabled: !user || !organizations || organizations.length < 1,
             },
             {
                 title: "Warehouses",
-                url: `/organizations/organization/${currentOrganization?.id}/warehouses`,
+                url: currentOrganization
+                    ? `/organizations/organization/${currentOrganization.id}/warehouses`
+                    : "/",
                 icon: Warehouse,
                 disabled: !currentOrganization,
             },
