@@ -9,9 +9,10 @@ import WarehouseModal from "./WarehouseModal";
 
 interface IProps {
     warehouse: IWarehouse;
+    canEdit: boolean;
 }
 
-export default function WarehouseCard({ warehouse }: IProps) {
+export default function WarehouseCard({ warehouse, canEdit }: IProps) {
     const [isEditOpen, setIsEditOpen] = useState(false);
 
     return (
@@ -20,14 +21,16 @@ export default function WarehouseCard({ warehouse }: IProps) {
                 <div className="relative h-24 bg-linear-to-br from-indigo-50 to-indigo-100 flex items-center justify-center">
                     <Warehouse className="w-10 h-10 text-indigo-600/50" />
 
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="absolute top-2 right-2 text-indigo-600 hover:bg-white/50 rounded-full"
-                        onClick={() => setIsEditOpen(true)}
-                    >
-                        <Edit className="w-4 h-4" />
-                    </Button>
+                    {canEdit && (
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="absolute top-2 right-2 text-indigo-600 hover:bg-white/50 rounded-full"
+                            onClick={() => setIsEditOpen(true)}
+                        >
+                            <Edit className="w-4 h-4" />
+                        </Button>
+                    )}
                 </div>
 
                 <div className="flex-1 p-5 space-y-4">

@@ -1,5 +1,6 @@
 "use server";
 
+import { getCurrentUserRole } from "@/actions/user.actions";
 import { getAllWarehouses } from "@/actions/warehouse.actions";
 import WarehouseCard from "@/components/Dashboard/Sections/Warehouses/WarehouseCard";
 import WarehousesHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehousesHeaderActions";
@@ -10,8 +11,14 @@ interface IProps {
 
 export default async function Warehouses({ params }: IProps) {
     const { organizationId } = await params;
+    const orgId = Number(organizationId);
 
-    const warehouses = await getAllWarehouses(organizationId);
+    const [warehouses, userRole] = await Promise.all([
+        getAllWarehouses(orgId),
+        getCurrentUserRole(orgId),
+    ]);
+
+    const canEdit = userRole === "owner" || userRole === "admin";
 
     if ("error" in warehouses) return null;
 
@@ -28,12 +35,19 @@ export default async function Warehouses({ params }: IProps) {
                     </p>
                 </div>
 
-                <WarehousesHeaderActions orgId={organizationId} />
+                <WarehousesHeaderActions
+                    orgId={organizationId}
+                    canEdit={canEdit}
+                />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {warehouses.map((warehouse) => (
-                    <WarehouseCard key={warehouse.id} warehouse={warehouse} />
+                    <WarehouseCard
+                        key={warehouse.id}
+                        warehouse={warehouse}
+                        canEdit={canEdit}
+                    />
                 ))}
             </div>
         </section>

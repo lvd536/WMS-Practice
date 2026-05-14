@@ -4,8 +4,16 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 import WarehouseModal from "./WarehouseModal";
 
-export default function WarehousesHeaderActions({ orgId }: { orgId: number }) {
+export default function WarehousesHeaderActions({
+    orgId,
+    canEdit,
+}: {
+    orgId: number;
+    canEdit: boolean;
+}) {
     const [isAddOpen, setIsAddOpen] = useState(false);
+
+    if (!canEdit) return null;
 
     return (
         <>
