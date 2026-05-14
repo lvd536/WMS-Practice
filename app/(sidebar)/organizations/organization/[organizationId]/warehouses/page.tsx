@@ -2,6 +2,7 @@
 
 import { getCurrentUserRole } from "@/actions/user.actions";
 import { getAllWarehouses } from "@/actions/warehouse.actions";
+import InviteMemberModal from "@/components/Dashboard/Sections/Organizations/InviteMemberModal";
 import WarehouseCard from "@/components/Dashboard/Sections/Warehouses/WarehouseCard";
 import WarehousesHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehousesHeaderActions";
 
@@ -34,6 +35,8 @@ export default async function Warehouses({ params }: IProps) {
                         network.
                     </p>
                 </div>
+
+                <InviteMemberModal orgId={organizationId} canEdit={canEdit} />
 
                 <WarehousesHeaderActions
                     orgId={organizationId}

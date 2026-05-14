@@ -9,6 +9,7 @@ import {
 import { useUserStore } from "@/stores/user.store";
 import { Link } from "next-view-transitions";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import Notifications from "../Notifications";
 
 export default function DashboardProvider({
     children,
@@ -26,14 +27,19 @@ export default function DashboardProvider({
                     <h1 className="flex items-center gap-3 font-semibold text-2xl leading-[140%] text-foreground">
                         WMS Dashboard
                     </h1>
-                    <Link href="/profile">
-                        <Avatar>
-                            <AvatarImage src={user?.avatar_path ?? undefined} />
-                            <AvatarFallback>
-                                {user!.name!.slice(0, 2).toUpperCase()}
-                            </AvatarFallback>
-                        </Avatar>
-                    </Link>
+                    <div className="flex gap-2 items-center justify-between">
+                        <Notifications />
+                        <Link href="/profile">
+                            <Avatar>
+                                <AvatarImage
+                                    src={user?.avatar_path ?? undefined}
+                                />
+                                <AvatarFallback>
+                                    {user!.name!.slice(0, 2).toUpperCase()}
+                                </AvatarFallback>
+                            </Avatar>
+                        </Link>
+                    </div>
                 </header>
                 <div className="flex flex-1 flex-col gap-4 p-4 pt-0 min-h-screen">
                     {children}

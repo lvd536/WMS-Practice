@@ -43,7 +43,7 @@ export default function Profile() {
                     </div>
                     <div className="absolute bottom-14 px-8 w-full flex items-center justify-between ">
                         <div className="flex flex-col gap-8 items-start">
-                            <Avatar className="w-32 h-32  border-4 border-solid border-white">
+                            <Avatar className="w-32 h-32 border-4 border-solid border-white">
                                 <AvatarImage
                                     src={user.avatar_path ?? undefined}
                                 />
