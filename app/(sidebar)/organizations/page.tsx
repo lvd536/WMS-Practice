@@ -1,9 +1,9 @@
 "use client";
 import OrganizationListItem from "@/components/Dashboard/Sections/Organizations/OrganizationListItem";
-import { Button } from "@/components/ui/button";
+import OrganizationsHeaderActions from "@/components/Dashboard/Sections/Organizations/OrganizationsHeaderActions";
 import { Input } from "@/components/ui/input";
 import { useOrganizationsStore } from "@/stores/organizations.store";
-import { Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
 
 export default function Organizations() {
@@ -37,10 +37,7 @@ export default function Organizations() {
                         started.
                     </p>
                 </div>
-                <Button className="h-10 gap-2">
-                    <Plus size={18} />
-                    Create organization
-                </Button>
+                <OrganizationsHeaderActions />
             </div>
 
             <div className="relative max-w-md">
