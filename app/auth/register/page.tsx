@@ -97,6 +97,7 @@ export default function Register() {
                     if (result.rawResponse.user && !("error" in profile)) {
                         setUser(profile);
                         login(result.rawResponse.user);
+                        router.push("/profile");
                         return "Success register!";
                     }
                     return "Cannot get user info, try later";

@@ -18,8 +18,7 @@ export default function Profile() {
     const { user } = useUserStore();
     const email = useAuthStore((s) => s.user?.email);
 
-    if (!user || !user.name || !email)
-        return <div>Error while loading profile</div>;
+    if (!user || !user.name || !email) return null;
     return (
         <div>
             <div className="w-screen flex items-center justify-start gap-3 px-2 sm:px-5 md:px-10 py-4.75">

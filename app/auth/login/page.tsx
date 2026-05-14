@@ -74,6 +74,7 @@ export default function Login() {
                     if (result.rawResponse.user && !("error" in profile)) {
                         setUser(profile);
                         login(result.rawResponse.user);
+                        router.push("/profile");
                         return "Success log in!";
                     }
                     return "Cannot get user info, try later";
