@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
     Building2,
     BriefcaseBusiness,
@@ -38,6 +37,8 @@ import {
 } from "@/components/ui/sidebar";
 
 import { useOrganizationsStore } from "@/stores/organizations.store";
+import { useEffect, useState } from "react";
+import OrganizationModal from "./Sections/Organizations/OrganizationModal";
 
 const ORGANIZATION_ICONS = [
     Building2,
@@ -70,6 +71,7 @@ function getOrganizationIconIndex(seed: string) {
 }
 
 export function OrganizationSwitcher() {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { isMobile } = useSidebar();
 
     const organizations = useOrganizationsStore((state) => state.organizations);
@@ -84,7 +86,7 @@ export function OrganizationSwitcher() {
 
     const activeOrganization = currentOrganization ?? organizations[0];
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!currentOrganization && organizations.length > 0) {
             setCurrentOrganization(organizations[0]);
         }
@@ -99,45 +101,46 @@ export function OrganizationSwitcher() {
     const ActiveIcon = ORGANIZATION_ICONS[activeIconIndex];
 
     return (
-        <SidebarMenu>
-            <SidebarMenuItem>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <SidebarMenuButton
-                            size="lg"
-                            className="
+        <>
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <SidebarMenuButton
+                                size="lg"
+                                className="
                                 data-[state=open]:bg-slate-800
                                 data-[state=open]:text-white
                                 hover:bg-slate-800/70
                                 transition-colors
                             "
-                        >
-                            <div
-                                className="
+                            >
+                                <div
+                                    className="
                                     flex aspect-square size-8 items-center justify-center
                                     rounded-lg
                                     bg-slate-700
                                     text-white
                                 "
-                            >
-                                <ActiveIcon className="size-4" />
-                            </div>
+                                >
+                                    <ActiveIcon className="size-4" />
+                                </div>
 
-                            <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-medium text-slate-100">
-                                    {activeOrganization.name}
-                                </span>
-                                <span className="truncate text-xs text-slate-400">
-                                    Current organization
-                                </span>
-                            </div>
+                                <div className="grid flex-1 text-left text-sm leading-tight">
+                                    <span className="truncate font-medium text-slate-100">
+                                        {activeOrganization.name}
+                                    </span>
+                                    <span className="truncate text-xs text-slate-400">
+                                        Current organization
+                                    </span>
+                                </div>
 
-                            <ChevronsUpDown className="ml-auto text-slate-400" />
-                        </SidebarMenuButton>
-                    </DropdownMenuTrigger>
+                                <ChevronsUpDown className="ml-auto text-slate-400" />
+                            </SidebarMenuButton>
+                        </DropdownMenuTrigger>
 
-                    <DropdownMenuContent
-                        className="
+                        <DropdownMenuContent
+                            className="
                             w-[--radix-dropdown-menu-trigger-width]
                             min-w-56
                             rounded-xl
@@ -149,28 +152,32 @@ export function OrganizationSwitcher() {
                             backdrop-blur-xl
                             ml-1
                         "
-                        align="start"
-                        side={isMobile ? "bottom" : "right"}
-                        sideOffset={6}
-                    >
-                        <DropdownMenuLabel className="text-xs text-slate-400">
-                            Organizations
-                        </DropdownMenuLabel>
+                            align="start"
+                            side={isMobile ? "bottom" : "right"}
+                            sideOffset={6}
+                        >
+                            <DropdownMenuLabel className="text-xs text-slate-400">
+                                Organizations
+                            </DropdownMenuLabel>
 
-                        {organizations.map((org) => {
-                            const orgIconIndex = getOrganizationIconIndex(
-                                String(org.id ?? org.name),
-                            );
+                            {organizations.map((org) => {
+                                const orgIconIndex = getOrganizationIconIndex(
+                                    String(org.id ?? org.name),
+                                );
 
-                            const OrgIcon = ORGANIZATION_ICONS[orgIconIndex];
+                                const OrgIcon =
+                                    ORGANIZATION_ICONS[orgIconIndex];
 
-                            const isActive = activeOrganization.id === org.id;
+                                const isActive =
+                                    activeOrganization.id === org.id;
 
-                            return (
-                                <DropdownMenuItem
-                                    key={org.id}
-                                    onClick={() => setCurrentOrganization(org)}
-                                    className={`
+                                return (
+                                    <DropdownMenuItem
+                                        key={org.id}
+                                        onClick={() =>
+                                            setCurrentOrganization(org)
+                                        }
+                                        className={`
                                         gap-2
                                         p-2
                                         rounded-md
@@ -180,29 +187,29 @@ export function OrganizationSwitcher() {
                                         hover:bg-slate-800
                                         ${isActive ? "bg-slate-800 text-slate-100" : "text-slate-100"}
                                     `}
-                                >
-                                    <div
-                                        className="
+                                    >
+                                        <div
+                                            className="
                                             flex size-7 items-center justify-center
                                             rounded-md
                                             border border-slate-700
                                             bg-slate-800
                                         "
-                                    >
-                                        <OrgIcon className="size-3.5 shrink-0 text-slate-200" />
-                                    </div>
+                                        >
+                                            <OrgIcon className="size-3.5 shrink-0 text-slate-200" />
+                                        </div>
 
-                                    <span className="text-slate-100">
-                                        {org.name}
-                                    </span>
-                                </DropdownMenuItem>
-                            );
-                        })}
+                                        <span className="text-slate-100">
+                                            {org.name}
+                                        </span>
+                                    </DropdownMenuItem>
+                                );
+                            })}
 
-                        <DropdownMenuSeparator className="bg-slate-700" />
+                            <DropdownMenuSeparator className="bg-slate-700" />
 
-                        <DropdownMenuItem
-                            className="
+                            <DropdownMenuItem
+                                className="
                                 gap-2
                                 p-2
                                 rounded-md
@@ -212,25 +219,36 @@ export function OrganizationSwitcher() {
                                 transition-colors
                                 text-slate-300
                             "
-                        >
-                            <div
-                                className="
+                            >
+                                <div
+                                    className="
                                     flex size-7 items-center justify-center
                                     rounded-md
                                     border border-dashed border-slate-600
                                     bg-slate-800/60
                                 "
-                            >
-                                <Plus className="size-4 text-slate-300" />
-                            </div>
+                                >
+                                    <Plus className="size-4 text-slate-300" />
+                                </div>
 
-                            <div className="font-medium text-slate-300">
-                                Add organization
-                            </div>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </SidebarMenuItem>
-        </SidebarMenu>
+                                <button
+                                    type="button"
+                                    className="font-medium text-slate-300"
+                                    onClick={() => setIsModalOpen(true)}
+                                >
+                                    Add organization
+                                </button>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </SidebarMenuItem>
+            </SidebarMenu>
+            {isModalOpen && (
+                <OrganizationModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                />
+            )}
+        </>
     );
 }
