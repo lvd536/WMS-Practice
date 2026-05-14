@@ -143,3 +143,29 @@ export async function updateUserProfile(
         };
     }
 }
+
+export async function getCurrentUserRole(organizationId: number) {
+    try {
+        const supabase = await createClient();
+
+        const {
+            data: { user },
+            error: authError,
+        } = await supabase.auth.getUser();
+        if (authError || !user) return null;
+
+        const { data: member, error } = await supabase
+            .from("organization_members")
+            .select("role")
+            .eq("organization_id", organizationId)
+            .eq("user_id", user.id)
+            .single();
+
+        if (error) throw new Error(error.message);
+
+        return member.role as "owner" | "admin" | "member";
+    } catch (err) {
+        console.error("getCurrentUserRole error:", err);
+        return null;
+    }
+}

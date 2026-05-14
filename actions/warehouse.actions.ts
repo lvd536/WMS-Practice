@@ -6,8 +6,9 @@ import {
     IWarehouse,
     IWarehouseProduct,
 } from "@/types/warehouse.types";
+import { revalidatePath } from "next/cache";
 
-export async function getAllWarehouses(organizationId: string) {
+export async function getAllWarehouses(organizationId: number) {
     try {
         const supabase = await createClient();
         const { data: warehouses, error: warehousesError } = await supabase
@@ -31,7 +32,7 @@ export async function getAllWarehouses(organizationId: string) {
         };
     }
 }
-export async function getWarehouseInfo(warehouseId: string) {
+export async function getWarehouseInfo(warehouseId: number) {
     try {
         const supabase = await createClient();
         const { data: warehouse, error: warehouseError } = await supabase
@@ -56,7 +57,7 @@ export async function getWarehouseInfo(warehouseId: string) {
         };
     }
 }
-export async function getWarehouseProducts(warehouseId: string) {
+export async function getWarehouseProducts(warehouseId: number) {
     try {
         const supabase = await createClient();
         const { data: warehouses, error: warehousesError } = await supabase
@@ -101,6 +102,139 @@ export async function getAllProductCategories() {
                         ? err.message
                         : "Unexpected error occurred",
             },
+        };
+    }
+}
+
+export async function createWarehouse(
+    warehouse: Omit<IWarehouse, "id" | "created_at" | "updated_at">,
+) {
+    try {
+        const supabase = await createClient();
+        const { error: warehouseCreationError } = await supabase
+            .from("warehouses")
+            .insert(warehouse);
+
+        if (warehouseCreationError)
+            throw new Error(warehouseCreationError.message);
+
+        return true;
+    } catch (err) {
+        console.error("createWarehouse error:", err);
+        return {
+            status: "error",
+            error: {
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : "Unexpected error occurred",
+            },
+        };
+    }
+}
+
+export async function deleteWarehouse(warehouseId: number) {
+    try {
+        const supabase = await createClient();
+        const { error: warehouseDeleteError } = await supabase
+            .from("warehouses")
+            .delete()
+            .eq("id", warehouseId);
+
+        if (warehouseDeleteError) throw new Error(warehouseDeleteError.message);
+
+        return true;
+    } catch (err) {
+        console.error("deleteWarehouse error:", err);
+        return {
+            status: "error",
+            error: {
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : "Unexpected error occurred",
+            },
+        };
+    }
+}
+
+export async function createWarehouseProduct(
+    product: Omit<IWarehouseProduct, "id" | "created_at" | "updated_at">,
+) {
+    try {
+        const supabase = await createClient();
+        const { error: productCreationError } = await supabase
+            .from("products")
+            .insert(product);
+
+        if (productCreationError) throw new Error(productCreationError.message);
+
+        return true;
+    } catch (err) {
+        console.error("createWarehouseProduct error:", err);
+        return {
+            status: "error",
+            error: {
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : "Unexpected error occurred",
+            },
+        };
+    }
+}
+
+export async function deleteWarehouseProduct(warehouseProductId: number) {
+    try {
+        const supabase = await createClient();
+        const { error: productDeleteError } = await supabase
+            .from("products")
+            .delete()
+            .eq("id", warehouseProductId);
+
+        if (productDeleteError) throw new Error(productDeleteError.message);
+
+        return true;
+    } catch (err) {
+        console.error("deleteWarehouseProduct error:", err);
+        return {
+            status: "error",
+            error: {
+                message:
+                    err instanceof Error
+                        ? err.message
+                        : "Unexpected error occurred",
+            },
+        };
+    }
+}
+
+export async function updateWarehouseProduct(
+    productId: number,
+    productData: Partial<
+        Omit<IWarehouseProduct, "id" | "created_at" | "updated_at">
+    >,
+) {
+    try {
+        const supabase = await createClient();
+        const { error } = await supabase
+            .from("products")
+            .update(productData)
+            .eq("id", productId);
+
+        if (error) throw new Error(error.message);
+
+        revalidatePath(
+            "/organizations/organization/[organizationId]/warehouses/warehouse/[warehouseId]",
+            "page",
+        );
+
+        return { status: "success" };
+    } catch (err) {
+        console.error("updateWarehouseProduct error:", err);
+        return {
+            status: "error",
+            message: err instanceof Error ? err.message : "Error",
         };
     }
 }

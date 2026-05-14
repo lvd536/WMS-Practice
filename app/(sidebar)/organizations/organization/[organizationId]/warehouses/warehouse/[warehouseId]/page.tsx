@@ -5,22 +5,30 @@ import {
     getWarehouseInfo,
     getWarehouseProducts,
 } from "@/actions/warehouse.actions";
+import { getCurrentUserRole } from "@/actions/user.actions";
 import { Button } from "@/components/ui/button";
 import { Box, MapPin, Plus } from "lucide-react";
 import ProductsTable from "@/components/Dashboard/Sections/Warehouses/ProductsTable";
+import WarehouseHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehouseHeaderActions";
 
 interface IProps {
-    params: Promise<{ warehouseId: string }>;
+    params: Promise<{ warehouseId: string; organizationId: string }>;
 }
 
 export default async function Warehouse({ params }: IProps) {
-    const { warehouseId } = await params;
+    const { organizationId, warehouseId } = await params;
 
-    const [warehouse, products, categories] = await Promise.all([
-        getWarehouseInfo(warehouseId),
-        getWarehouseProducts(warehouseId),
+    const wId = Number(warehouseId);
+    const orgId = Number(organizationId);
+
+    const [warehouse, products, categories, userRole] = await Promise.all([
+        getWarehouseInfo(wId),
+        getWarehouseProducts(wId),
         getAllProductCategories(),
+        getCurrentUserRole(orgId),
     ]);
+
+    const canEdit = userRole === "owner" || userRole === "admin";
 
     if ("error" in warehouse || "error" in products || "error" in categories)
         return (
@@ -49,13 +57,20 @@ export default async function Warehouse({ params }: IProps) {
                     </div>
                 </div>
 
-                <Button className="h-10 bg-indigo-600 hover:bg-indigo-700 shadow-md">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Product
-                </Button>
+                {canEdit && (
+                    <WarehouseHeaderActions
+                        warehouseId={wId}
+                        categories={categories}
+                    />
+                )}
             </div>
 
-            <ProductsTable products={products} categories={categories} />
+            <ProductsTable
+                warehouseId={wId}
+                products={products}
+                categories={categories}
+                canEdit={canEdit}
+            />
         </section>
     );
 }

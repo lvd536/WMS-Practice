@@ -1,5 +1,5 @@
 export interface IWarehouse {
-    id: string;
+    id: number;
     organization_id: string;
     name: string;
     address: string;
@@ -17,8 +17,8 @@ export interface ICategory {
 }
 
 export interface IWarehouseProduct {
-    id: string;
-    warehouse_id: string;
+    id: number;
+    warehouse_id: number;
     name: string;
     length: number;
     width: number;

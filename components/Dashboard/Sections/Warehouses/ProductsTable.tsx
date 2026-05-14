@@ -1,6 +1,13 @@
 "use client";
 
+import { deleteWarehouseProduct } from "@/actions/warehouse.actions";
 import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
     Select,
@@ -17,31 +24,57 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { ICategory, IWarehouseProduct } from "@/types/warehouse.types";
 import {
     ChevronLeft,
     ChevronRight,
     Cpu,
+    Edit,
+    MoreHorizontal,
     Package,
     Search,
     Shirt,
+    Trash2,
     Wrench,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import ProductModal from "./ProductModal";
 
 interface IProductsTableProps {
+    warehouseId: number;
     products: IWarehouseProduct[];
     categories: ICategory[];
+    canEdit?: boolean;
 }
 
 export default function ProductsTable({
+    warehouseId,
     products,
     categories,
+    canEdit = false,
 }: IProductsTableProps) {
+    const router = useRouter();
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<string>("all");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
+
+    const [editingProduct, setEditingProduct] =
+        useState<IWarehouseProduct | null>(null);
+    const [deletingProduct, setDeletingProduct] =
+        useState<IWarehouseProduct | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     const filteredProducts = products.filter((product) => {
         const matchesSearch = product.name
@@ -69,6 +102,20 @@ export default function ProductsTable({
     const handleCategory = (val: string) => {
         setSelectedCategory(val);
         setCurrentPage(1);
+    };
+
+    const handleDelete = async () => {
+        if (!deletingProduct) return;
+        setIsDeleting(true);
+        try {
+            await deleteWarehouseProduct(deletingProduct.id);
+            router.refresh();
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsDeleting(false);
+            setDeletingProduct(null);
+        }
     };
 
     const formatDate = (dateString: string) => {
@@ -139,6 +186,11 @@ export default function ProductsTable({
                             <TableHead className="font-semibold text-slate-700">
                                 CREATE DATE
                             </TableHead>
+                            {canEdit && (
+                                <TableHead className="font-semibold text-slate-700 text-right">
+                                    ACTIONS
+                                </TableHead>
+                            )}
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -167,13 +219,7 @@ export default function ProductsTable({
                                                     </span>
                                                     <span className="text-xs text-slate-500 uppercase">
                                                         SKU:
-                                                        {typeof product.id ===
-                                                            "string" &&
-                                                        product.id.includes("-")
-                                                            ? product.id.split(
-                                                                  "-",
-                                                              )[0]
-                                                            : `PRD-${product.id}`}
+                                                        {`PRD-${product.id}`}
                                                     </span>
                                                 </div>
                                             </div>
@@ -199,6 +245,48 @@ export default function ProductsTable({
                                         <TableCell className="text-slate-500 text-sm">
                                             {formatDate(product.created_at)}
                                         </TableCell>
+                                        {canEdit && (
+                                            <TableCell className="text-right">
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger
+                                                        asChild
+                                                    >
+                                                        <Button
+                                                            variant="ghost"
+                                                            className="h-8 w-8 p-0"
+                                                        >
+                                                            <MoreHorizontal className="h-4 w-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent
+                                                        align="end"
+                                                        className="w-40"
+                                                    >
+                                                        <DropdownMenuItem
+                                                            onClick={() =>
+                                                                setEditingProduct(
+                                                                    product,
+                                                                )
+                                                            }
+                                                        >
+                                                            <Edit className="mr-2 h-4 w-4" />{" "}
+                                                            Edit
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            className="text-red-600 focus:text-red-600"
+                                                            onClick={() =>
+                                                                setDeletingProduct(
+                                                                    product,
+                                                                )
+                                                            }
+                                                        >
+                                                            <Trash2 className="mr-2 h-4 w-4" />{" "}
+                                                            Delete
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </TableCell>
+                                        )}
                                     </TableRow>
                                 );
                             })
@@ -251,6 +339,45 @@ export default function ProductsTable({
                     </div>
                 </div>
             </div>
+            {editingProduct && (
+                <ProductModal
+                    isOpen={!!editingProduct}
+                    onClose={() => setEditingProduct(null)}
+                    warehouseId={warehouseId}
+                    categories={categories}
+                    initialData={editingProduct}
+                />
+            )}
+
+            <AlertDialog
+                open={!!deletingProduct}
+                onOpenChange={(open) => !open && setDeletingProduct(null)}
+            >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>
+                            Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This will permanently delete
+                            <b>{deletingProduct?.name}</b> from the warehouse.
+                            This action cannot be undone.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel disabled={isDeleting}>
+                            Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={handleDelete}
+                            disabled={isDeleting}
+                            className="bg-red-600 hover:bg-red-700"
+                        >
+                            {isDeleting ? "Deleting..." : "Delete"}
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 }

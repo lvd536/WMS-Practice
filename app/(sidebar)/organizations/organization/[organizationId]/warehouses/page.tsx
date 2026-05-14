@@ -11,7 +11,8 @@ interface IProps {
 
 export default async function Warehouses({ params }: IProps) {
     const { organizationId } = await params;
-    const warehouses = await getAllWarehouses(organizationId);
+
+    const warehouses = await getAllWarehouses(+organizationId);
 
     if ("error" in warehouses) return null;
 
