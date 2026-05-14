@@ -19,7 +19,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const currentOrganization = useOrganizationsStore(
         (s) => s.currentOrganization,
     );
-    const organizations = useOrganizationsStore((s) => s.organizations);
 
     const data = {
         navMain: [

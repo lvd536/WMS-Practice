@@ -69,7 +69,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return () => {
             subscription.unsubscribe();
         };
-    }, [clearUser, logout, setUser, router, login, supabase.auth]);
+    }, [
+        clearUser,
+        logout,
+        setUser,
+        router,
+        login,
+        supabase.auth,
+        setOrganizations,
+    ]);
 
     return <>{children}</>;
 }
