@@ -6,12 +6,15 @@ import { IOrganization } from "@/types/organization.types";
 import { Van, Edit2 } from "lucide-react";
 import { useState } from "react";
 import OrganizationModal from "./OrganizationModal";
+import { useUserRole } from "@/hooks/useUserRole";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface IProps {
     organization: IOrganization;
 }
 
 export default function OrganizationListItem({ organization }: IProps) {
+    const { role, loading } = useUserRole(organization.id);
     const { currentOrganization, setCurrentOrganization } =
         useOrganizationsStore();
     const [isEditOpen, setIsEditOpen] = useState(false);
@@ -20,20 +23,27 @@ export default function OrganizationListItem({ organization }: IProps) {
         <>
             <li className="flex flex-col relative p-6 backdrop-blur-[20px] shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] bg-white border rounded-xl border-solid border-[rgba(199,196,216,0.5)]">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[rgba(53,37,205,0.05)] rounded-[0_1100px_0_9999px]" />
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-4 right-4 z-10 hover:bg-slate-100 rounded-full"
-                    onClick={() => setIsEditOpen(true)}
-                >
-                    <Edit2 className="w-4 h-4 text-slate-500" />
-                </Button>
+                {role === "admin" ||
+                    (role === "owner" && (
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="absolute top-4 right-4 z-10 hover:bg-slate-100 rounded-full"
+                            onClick={() => setIsEditOpen(true)}
+                        >
+                            <Edit2 className="w-4 h-4 text-slate-500" />
+                        </Button>
+                    ))}
 
                 <div className="flex items-start justify-between">
                     <Van className="border w-12 h-12 bg-[#e5eeff] rounded-lg border-solid border-[rgba(199,196,216,0.3)] stroke-[#3525cd] p-2.5" />
-                    <p className="bg-[rgba(79,70,229,0.15)] font-semibold text-[13px] leading-[100%] tracking-wider uppercase text-[#3525cd] px-3 py-1 rounded-full mr-10">
-                        Owner
-                    </p>
+                    {loading ? (
+                        <Skeleton className="w-18.75 h-5.25 px-3 py-1 rounded-full mr-10" />
+                    ) : (
+                        <p className="bg-[rgba(79,70,229,0.15)] font-semibold text-[13px] leading-[100%] tracking-wider uppercase text-[#3525cd] px-3 py-1 rounded-full mr-10">
+                            {role}
+                        </p>
+                    )}
                 </div>
                 <h2 className="font-semibold text-2xl leading-[140%] text-foreground mt-4">
                     {organization.name}
