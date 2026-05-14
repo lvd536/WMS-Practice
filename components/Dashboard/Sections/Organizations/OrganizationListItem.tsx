@@ -36,11 +36,11 @@ export default function OrganizationListItem({ organization }: IProps) {
                     ))}
 
                 <div className="flex items-start justify-between">
-                    <Van className="border w-12 h-12 bg-[#e5eeff] rounded-lg border-solid border-[rgba(199,196,216,0.3)] stroke-[#3525cd] p-2.5" />
+                    <Van className="border w-12 h-12 bg-[#e5eeff] rounded-lg border-solid border-[rgba(199,196,216,0.3)] stroke-[#3525cd] p-2.5 shrink-0" />
                     {loading ? (
-                        <Skeleton className="w-18.75 h-5.25 px-3 py-1 rounded-full mr-10" />
+                        <Skeleton className="w-18.75 h-5.25 px-3 py-1 rounded-full ml-1 mr-10" />
                     ) : (
-                        <p className="bg-[rgba(79,70,229,0.15)] font-semibold text-[13px] leading-[100%] tracking-wider uppercase text-[#3525cd] px-3 py-1 rounded-full mr-10">
+                        <p className="bg-[rgba(79,70,229,0.15)] font-semibold text-[13px] leading-[100%] tracking-wider uppercase text-[#3525cd] px-3 py-1 rounded-full ml-1 mr-10">
                             {role}
                         </p>
                     )}
