@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
     Popover,
     PopoverContent,
@@ -9,13 +10,41 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { useNotifications } from "@/hooks/useNotifications";
-import { Bell, CheckCheck, Inbox } from "lucide-react";
+import { Bell, CheckCheck, Inbox, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { acceptOrganizationInvitation } from "@/actions/organization.actions";
 
 export default function Notifications() {
     const { notifications, unreadCount, markAllAsRead, markAsRead } =
         useNotifications();
+    const [actionLoadingId, setActionLoadingId] = useState<number | null>(null);
+
+    const handleAcceptInvite = async (
+        e: React.MouseEvent,
+        entityId: number,
+        notificationId: string,
+        isRead: boolean,
+    ) => {
+        e.stopPropagation();
+
+        setActionLoadingId(entityId);
+        try {
+            const result = await acceptOrganizationInvitation(entityId);
+
+            if (result && "status" in result && result.status === "error") {
+                console.error(result.message);
+            } else {
+                if (!isRead) {
+                    await markAsRead(notificationId);
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setActionLoadingId(null);
+        }
+    };
 
     return (
         <Popover>
@@ -83,15 +112,10 @@ export default function Notifications() {
                                 )}
                             >
                                 {!item.is_read && (
-                                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-600 dark:bg-blue-400 animate-pulse" />
+                                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-blue-600 dark:bg-blue-400" />
                                 )}
 
-                                <div
-                                    className={cn(
-                                        "flex flex-col gap-1 w-full",
-                                        item.is_read && "pl-4.5",
-                                    )}
-                                >
+                                <div className="flex flex-col gap-1 w-full">
                                     <div className="flex justify-between items-baseline gap-2">
                                         <p
                                             className={cn(
@@ -114,6 +138,30 @@ export default function Notifications() {
                                     <p className="text-muted-foreground text-[11px] leading-relaxed wrap-break-words">
                                         {item.message}
                                     </p>
+
+                                    {item.type === "invite" && (
+                                        <div className="flex items-center gap-2 mt-2">
+                                            <Button
+                                                size="xs"
+                                                onClick={(e) => {
+                                                    handleAcceptInvite(
+                                                        e,
+                                                        item.entity_id,
+                                                        item.id,
+                                                        item.is_read,
+                                                    );
+                                                }}
+                                            >
+                                                {actionLoadingId ===
+                                                item.entity_id ? (
+                                                    <Loader2 className="h-3 w-3 animate-spin mr-1" />
+                                                ) : (
+                                                    <Check className="h-3 w-3 mr-1" />
+                                                )}
+                                                Принять
+                                            </Button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         ))
