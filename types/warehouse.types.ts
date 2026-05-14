@@ -1,6 +1,6 @@
 export interface IWarehouse {
     id: number;
-    organization_id: string;
+    organization_id: number;
     name: string;
     address: string;
     max_capacity: number;

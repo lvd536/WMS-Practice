@@ -6,8 +6,7 @@ import {
     getWarehouseProducts,
 } from "@/actions/warehouse.actions";
 import { getCurrentUserRole } from "@/actions/user.actions";
-import { Button } from "@/components/ui/button";
-import { Box, MapPin, Plus } from "lucide-react";
+import { Box, MapPin } from "lucide-react";
 import ProductsTable from "@/components/Dashboard/Sections/Warehouses/ProductsTable";
 import WarehouseHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehouseHeaderActions";
 

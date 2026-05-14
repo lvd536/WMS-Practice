@@ -2,17 +2,16 @@
 
 import { getAllWarehouses } from "@/actions/warehouse.actions";
 import WarehouseCard from "@/components/Dashboard/Sections/Warehouses/WarehouseCard";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import WarehousesHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehousesHeaderActions";
 
 interface IProps {
-    params: Promise<{ organizationId: string }>;
+    params: Promise<{ organizationId: number }>;
 }
 
 export default async function Warehouses({ params }: IProps) {
     const { organizationId } = await params;
 
-    const warehouses = await getAllWarehouses(+organizationId);
+    const warehouses = await getAllWarehouses(organizationId);
 
     if ("error" in warehouses) return null;
 
@@ -29,10 +28,7 @@ export default async function Warehouses({ params }: IProps) {
                     </p>
                 </div>
 
-                <Button className="h-10 bg-indigo-600 hover:bg-indigo-700 shadow-md">
-                    <Plus className="mr-2 h-4 w-4" />
-                    Add Warehouse
-                </Button>
+                <WarehousesHeaderActions orgId={organizationId} />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">

@@ -118,6 +118,11 @@ export async function createWarehouse(
         if (warehouseCreationError)
             throw new Error(warehouseCreationError.message);
 
+        revalidatePath(
+            "/organizations/organization/[organizationId]/warehouses/",
+            "page",
+        );
+
         return true;
     } catch (err) {
         console.error("createWarehouse error:", err);
@@ -142,6 +147,11 @@ export async function deleteWarehouse(warehouseId: number) {
             .eq("id", warehouseId);
 
         if (warehouseDeleteError) throw new Error(warehouseDeleteError.message);
+
+        revalidatePath(
+            "/organizations/organization/[organizationId]/warehouses/",
+            "page",
+        );
 
         return true;
     } catch (err) {
@@ -205,6 +215,36 @@ export async function deleteWarehouseProduct(warehouseProductId: number) {
                         ? err.message
                         : "Unexpected error occurred",
             },
+        };
+    }
+}
+
+export async function updateWarehouse(
+    warehouseId: number,
+    warehouseData: Partial<
+        Omit<IWarehouse, "id" | "created_at" | "updated_at">
+    >,
+) {
+    try {
+        const supabase = await createClient();
+        const { error } = await supabase
+            .from("warehouses")
+            .update(warehouseData)
+            .eq("id", warehouseId);
+
+        if (error) throw new Error(error.message);
+
+        revalidatePath(
+            "/organizations/organization/[organizationId]/warehouses/",
+            "page",
+        );
+
+        return { status: "success" };
+    } catch (err) {
+        console.error("updateWarehouse error:", err);
+        return {
+            status: "error",
+            message: err instanceof Error ? err.message : "Error",
         };
     }
 }
