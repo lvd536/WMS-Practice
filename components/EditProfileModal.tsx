@@ -28,7 +28,7 @@ import {
 import { Pencil } from "lucide-react";
 import { useAuthStore } from "@/stores/auth.store";
 
-interface IProps {
+interface IProps extends React.PropsWithChildren {
     triggerClassName?: string;
 }
 
@@ -72,7 +72,10 @@ const formSchema = z.object({
         ),
 });
 
-export default function EditProfileModal({ triggerClassName }: IProps) {
+export default function EditProfileModal({
+    triggerClassName,
+    children,
+}: IProps) {
     const profile = useUserStore((s) => s.user);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -148,9 +151,11 @@ export default function EditProfileModal({ triggerClassName }: IProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button className={triggerClassName}>
-                    <Pencil /> Edit profile
-                </Button>
+                {children || (
+                    <Button className={triggerClassName}>
+                        <Pencil /> Edit profile
+                    </Button>
+                )}
             </DialogTrigger>
             <DialogContent className="sm:max-w-sm">
                 <form
