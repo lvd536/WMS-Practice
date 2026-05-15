@@ -8,11 +8,16 @@ import { OrganizationSwitcher } from "@/components/Dashboard/OrganizationSwitche
 import {
     Sidebar,
     SidebarContent,
+    SidebarFooter,
     SidebarHeader,
+    SidebarMenuButton,
+    SidebarMenuItem,
     SidebarRail,
+    SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useOrganizationsStore } from "@/stores/organizations.store";
 import { useAuthStore } from "@/stores/auth.store";
+import NavUser from "./NavUser";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const user = useAuthStore((s) => s.user);
@@ -53,11 +58,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
         <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
+                <SidebarMenuItem className="group/collapsible">
+                    <SidebarTrigger />
+                </SidebarMenuItem>
+
                 <OrganizationSwitcher />
             </SidebarHeader>
             <SidebarContent>
                 <NavMain items={data.navMain} />
             </SidebarContent>
+            <SidebarFooter>
+                <NavUser />
+            </SidebarFooter>
             <SidebarRail />
         </Sidebar>
     );
