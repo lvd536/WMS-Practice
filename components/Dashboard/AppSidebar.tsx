@@ -40,7 +40,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             {
                 title: "Warehouses",
                 url: currentOrganization
-                    ? `/organizations/organization/${currentOrganization.id}/warehouses`
+                    ? `/organizations/${currentOrganization.id}/warehouses`
                     : "/",
                 icon: Warehouse,
                 disabled: !currentOrganization,

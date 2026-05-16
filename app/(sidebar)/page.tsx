@@ -40,7 +40,7 @@ export default function Home() {
                     plans, and localized settings."
                     href={
                         organization
-                            ? `/organizations/organization/${organization.id}/warehouses`
+                            ? `/organizations/${organization.id}/warehouses`
                             : ""
                     }
                 />

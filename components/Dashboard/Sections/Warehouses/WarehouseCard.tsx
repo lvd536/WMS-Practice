@@ -58,7 +58,7 @@ export default function WarehouseCard({ warehouse, canEdit }: IProps) {
 
                 <div className="p-4 bg-slate-50 border-t border-slate-100">
                     <Link
-                        href={`warehouses/warehouse/${warehouse.id}`}
+                        href={`warehouses/${warehouse.id}`}
                         className="w-full flex items-center justify-between text-sm font-medium text-slate-700 hover:text-indigo-600 transition-colors"
                     >
                         Open Warehouse

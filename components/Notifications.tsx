@@ -151,7 +151,7 @@ export default function Notifications({ children }: React.PropsWithChildren) {
                                                 onClick={(e) => {
                                                     handleAcceptInvite(
                                                         e,
-                                                        item.entity_id,
+                                                        item.entity_id!,
                                                         item.id,
                                                         item.is_read,
                                                     );

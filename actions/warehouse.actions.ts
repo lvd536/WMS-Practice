@@ -119,7 +119,7 @@ export async function createWarehouse(
             throw new Error(warehouseCreationError.message);
 
         revalidatePath(
-            "/organizations/organization/[organizationId]/warehouses/",
+            "/organizations/[organizationId]/warehouses/",
             "page",
         );
 
@@ -149,7 +149,7 @@ export async function deleteWarehouse(warehouseId: number) {
         if (warehouseDeleteError) throw new Error(warehouseDeleteError.message);
 
         revalidatePath(
-            "/organizations/organization/[organizationId]/warehouses/",
+            "/organizations/[organizationId]/warehouses/",
             "page",
         );
 
@@ -235,7 +235,7 @@ export async function updateWarehouse(
         if (error) throw new Error(error.message);
 
         revalidatePath(
-            "/organizations/organization/[organizationId]/warehouses/",
+            "/organizations/[organizationId]/warehouses/",
             "page",
         );
 
@@ -265,7 +265,7 @@ export async function updateWarehouseProduct(
         if (error) throw new Error(error.message);
 
         revalidatePath(
-            "/organizations/organization/[organizationId]/warehouses/warehouse/[warehouseId]",
+            "/organizations/[organizationId]/warehouses/[warehouseId]",
             "page",
         );
 

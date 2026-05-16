@@ -1,22 +1,9 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-
-interface Notification {
-    id: string;
-    userId: string;
-    title: string;
-    message: string;
-    type: string;
-    entity_type: string;
-    entity_id: number;
-    metadata: object;
-    is_read: boolean;
-    read_at: string;
-    created_at: string;
-}
+import { INotification } from "@/types/warehouse.types";
 
 export function useNotifications() {
-    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [notifications, setNotifications] = useState<INotification[]>([]);
     const supabase = createClient();
 
     const markAsRead = async (id: string) => {
@@ -66,7 +53,7 @@ export function useNotifications() {
                 "postgres_changes",
                 { event: "INSERT", schema: "public", table: "notifications" },
                 (payload) => {
-                    const newNotification = payload.new as Notification;
+                    const newNotification = payload.new as INotification;
                     setNotifications((prev) => [newNotification, ...prev]);
                 },
             )
@@ -74,7 +61,7 @@ export function useNotifications() {
                 "postgres_changes",
                 { event: "UPDATE", schema: "public", table: "notifications" },
                 (payload) => {
-                    const updatedNotification = payload.new as Notification;
+                    const updatedNotification = payload.new as INotification;
                     setNotifications((prev) =>
                         prev.map((n) =>
                             n.id === updatedNotification.id
