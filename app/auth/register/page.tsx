@@ -24,6 +24,8 @@ import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth.store";
 import { useUserStore } from "@/stores/user.store";
+import { getAllOrganizations } from "@/actions/organization.actions";
+import { useOrganizationsStore } from "@/stores/organizations.store";
 
 const formSchema = z
     .object({
@@ -67,6 +69,7 @@ export default function Register() {
     });
     const { login } = useAuthStore();
     const { setUser } = useUserStore();
+    const { setOrganizations } = useOrganizationsStore();
     const router = useRouter();
     async function onSubmit(data: z.infer<typeof formSchema>) {
         toast.promise(
@@ -93,10 +96,16 @@ export default function Register() {
                 loading: "Register your account...",
                 success: async (result) => {
                     const profile = await getUserProfile(result.id);
+                    const organizations = await getAllOrganizations();
 
-                    if (result.rawResponse.user && !("error" in profile)) {
+                    if (
+                        result.rawResponse.user &&
+                        !("error" in profile) &&
+                        !("error" in organizations)
+                    ) {
                         setUser(profile);
                         login(result.rawResponse.user);
+                        setOrganizations(organizations);
                         router.push("/profile");
                         return "Success register!";
                     }
