@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 export interface IWarehouse {
     id: number;
-
     organization_id: number;
-
     name: string;
     address?: string | null;
-
     max_capacity: number;
-
     created_at: string;
     updated_at?: string | null;
 }
@@ -22,26 +19,15 @@ export interface IWarehouseWithStats extends IWarehouse {
 
 export interface IWarehouseRack {
     id: number;
-
     warehouse_id: number;
-
     name: string;
     code: string;
-
     description?: string | null;
-
-    width?: number | null;
-    height?: number | null;
-    depth?: number | null;
-
     max_weight: number;
     max_volume: number;
-
     current_weight?: number;
     current_volume?: number;
-
     deleted_at?: string | null;
-
     created_at: string;
     updated_at?: string | null;
 }
@@ -54,53 +40,45 @@ export interface IRackWithStats extends IWarehouseRack {
 
 export interface ICategory {
     id: number;
-
     name: string;
-
     description?: string | null;
-
     created_at: string;
     updated_at?: string | null;
 }
 
 export interface IProduct {
     id: number;
+    warehouse_id: number;
+    quantity: number;
 
-    organization_id: number;
-
+    organization_id?: number | null;
     category_id?: number | null;
+    rack_id?: number | null;
 
     name: string;
-
-    sku: string;
+    sku?: string | null;
     barcode?: string | null;
 
     length: number;
     width: number;
     height: number;
-
     weight: number;
 
     deleted_at?: string | null;
-
     created_at: string;
     updated_at?: string | null;
 }
 
-export interface IWarehouseProduct extends IProduct {
-    warehouse_id?: number | null;
-    rack_id?: number | null;
-    quantity?: number | null;
+export interface IRackProduct extends IProduct {
+    placement_id: number;
+    placement_quantity: number;
 }
 
 export interface IProductPlacement {
     id: number;
-
     product_id: number;
     rack_id: number;
-
     quantity: number;
-
     created_at: string;
     updated_at?: string | null;
 }
@@ -142,19 +120,13 @@ export type InventoryMovementType =
 
 export interface IInventoryMovement {
     id: number;
-
     product_id: number;
-
     from_rack_id?: number | null;
     to_rack_id?: number | null;
-
     quantity: number;
-
     movement_type: InventoryMovementType;
-
     created_by?: string | null;
     note?: string | null;
-
     created_at: string;
 }
 
@@ -168,7 +140,7 @@ export type NotificationType =
     | "inventory";
 
 export interface INotification {
-    id: string;
+    id: number;
     user_id: string;
     title: string;
     message: string;
@@ -183,16 +155,10 @@ export interface INotification {
 
 export interface IAuditLog {
     id: number;
-
     actor_id?: string | null;
-
     action: string;
-
     table_name: string;
-
     record_id?: string | null;
-
     details?: Record<string, any> | null;
-
     created_at: string;
 }

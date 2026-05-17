@@ -23,7 +23,7 @@ export default function Notifications({ children }: React.PropsWithChildren) {
     const handleAcceptInvite = async (
         e: React.MouseEvent,
         entityId: number,
-        notificationId: string,
+        notificationId: number,
         isRead: boolean,
     ) => {
         e.stopPropagation();

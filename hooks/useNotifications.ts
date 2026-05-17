@@ -6,7 +6,7 @@ export function useNotifications() {
     const [notifications, setNotifications] = useState<INotification[]>([]);
     const supabase = createClient();
 
-    const markAsRead = async (id: string) => {
+    const markAsRead = async (id: number) => {
         const { error } = await supabase
             .from("notifications")
             .update({
