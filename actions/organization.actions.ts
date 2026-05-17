@@ -28,7 +28,7 @@ export async function getAllOrganizations() {
 }
 
 export async function createOrganization(
-    organization: Omit<IOrganization, "id">,
+    organization: Omit<IOrganization, "id" | "created_at">,
 ) {
     try {
         const supabase = await createClient();
