@@ -175,6 +175,8 @@ export async function acceptOrganizationInvitation(invitationId: number) {
 
         if (error) throw error;
 
+        revalidatePath("/organizations/", "page");
+
         return data;
     } catch (err) {
         console.error("acceptOrganizationInvitation error:", err);

@@ -18,7 +18,23 @@ import { acceptOrganizationInvitation } from "@/actions/organization.actions";
 export default function Notifications({ children }: React.PropsWithChildren) {
     const { notifications, unreadCount, markAllAsRead, markAsRead } =
         useNotifications();
+
     const [actionLoadingId, setActionLoadingId] = useState<number | null>(null);
+
+    const [acceptedInvites, setAcceptedInvites] = useState<number[]>([]);
+
+    const isInviteAccepted = (entityId?: number) => {
+        if (!entityId) return false;
+
+        if (acceptedInvites.includes(entityId)) return true;
+
+        return notifications.some(
+            (n) =>
+                n.entity_type === "organization_invitation" &&
+                n.entity_id === entityId &&
+                n.type === "success",
+        );
+    };
 
     const handleAcceptInvite = async (
         e: React.MouseEvent,
@@ -35,6 +51,8 @@ export default function Notifications({ children }: React.PropsWithChildren) {
             if (result && "status" in result && result.status === "error") {
                 console.error(result.message);
             } else {
+                setAcceptedInvites((prev) => [...prev, entityId]);
+
                 if (!isRead) {
                     await markAsRead(notificationId);
                 }
@@ -145,26 +163,39 @@ export default function Notifications({ children }: React.PropsWithChildren) {
 
                                     {item.type === "invite" && (
                                         <div className="mt-2 flex items-center gap-2">
-                                            <Button
-                                                size="xs"
-                                                className="bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
-                                                onClick={(e) => {
-                                                    handleAcceptInvite(
-                                                        e,
-                                                        item.entity_id!,
-                                                        item.id,
-                                                        item.is_read,
-                                                    );
-                                                }}
-                                            >
-                                                {actionLoadingId ===
-                                                item.entity_id ? (
-                                                    <Loader2 className="mr-1 h-3 w-3 animate-spin" />
-                                                ) : (
-                                                    <Check className="mr-1 h-3 w-3" />
-                                                )}
-                                                Принять
-                                            </Button>
+                                            {!isInviteAccepted(
+                                                item.entity_id,
+                                            ) ? (
+                                                <Button
+                                                    size="xs"
+                                                    disabled={
+                                                        actionLoadingId ===
+                                                        item.entity_id
+                                                    }
+                                                    className="bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90"
+                                                    onClick={(e) => {
+                                                        handleAcceptInvite(
+                                                            e,
+                                                            item.entity_id!,
+                                                            item.id,
+                                                            item.is_read,
+                                                        );
+                                                    }}
+                                                >
+                                                    {actionLoadingId ===
+                                                    item.entity_id ? (
+                                                        <Loader2 className="mr-1 h-3 w-3 animate-spin" />
+                                                    ) : (
+                                                        <Check className="mr-1 h-3 w-3" />
+                                                    )}
+                                                    Принять
+                                                </Button>
+                                            ) : (
+                                                <span className="text-[11px] font-medium text-emerald-600 flex items-center px-2 py-1 rounded-md">
+                                                    <CheckCheck className="w-3 h-3 mr-1" />
+                                                    Принято
+                                                </span>
+                                            )}
                                         </div>
                                     )}
                                 </div>
