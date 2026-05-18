@@ -2,6 +2,7 @@
 
 import {
     getAllProductCategories,
+    getAllWarehouses,
     getWarehouseInfo,
     getWarehouseProducts,
 } from "@/actions/warehouse.actions";
@@ -33,6 +34,7 @@ export default async function Rack({ params }: IProps) {
         categories,
         userRole,
         rack,
+        warehouses,
     ] = await Promise.all([
         getWarehouseInfo(wId),
         getRackProducts(rId),
@@ -40,6 +42,7 @@ export default async function Rack({ params }: IProps) {
         getAllProductCategories(),
         getCurrentUserRole(orgId),
         getWarehouseRack(rId),
+        getAllWarehouses(orgId),
     ]);
 
     const canEdit = userRole === "owner" || userRole === "admin";
@@ -49,7 +52,8 @@ export default async function Rack({ params }: IProps) {
         "error" in rackProducts ||
         "error" in allWarehouseProducts ||
         "error" in categories ||
-        "error" in rack
+        "error" in rack ||
+        "error" in warehouses
     )
         return (
             <div className="p-8 text-red-500">Failed to load rack data.</div>
@@ -123,6 +127,7 @@ export default async function Rack({ params }: IProps) {
                 allWarehouseProducts={allWarehouseProducts}
                 categories={categories}
                 canEdit={canEdit}
+                warehouses={warehouses}
             />
         </section>
     );

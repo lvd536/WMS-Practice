@@ -240,7 +240,7 @@ export default async function Warehouse({ params }: IProps) {
                                                     minute: "2-digit",
                                                 })}
                                             </TableCell>
-                                            <TableCell className="text-right text-slate-400 italic text-[11px] max-w-[150px] truncate">
+                                            <TableCell className="text-right text-slate-400 italic text-[11px] max-w-37.5 truncate">
                                                 {m.note || "—"}
                                             </TableCell>
                                         </TableRow>

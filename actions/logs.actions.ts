@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import {
     IInventoryMovement,
+    IProductInventoryMovement,
     IWarehouseInventoryMovement,
 } from "@/types/warehouse.types";
 import { revalidatePath } from "next/cache";
@@ -104,20 +105,19 @@ export async function getWarehouseInventoryMovements(warehouseId: number) {
     }
 }
 
-export async function getProductInventoryMovements(productId: number) {
+export async function getProductMovements(productId: number) {
     try {
         const supabase = await createClient();
 
-        const { data, error } = await supabase
-            .from("inventory_movements")
-            .select()
-            .eq("product_id", productId);
+        const { data, error } = await supabase.rpc("get_product_movements", {
+            p_product_id: productId,
+        });
 
         if (error) throw new Error(error.message);
 
-        return data as IInventoryMovement[];
+        return data as IProductInventoryMovement[];
     } catch (err) {
-        console.error("getProductInventoryMovements error:", err);
+        console.error("getProductMovements error:", err);
         return {
             status: "error",
             error: {

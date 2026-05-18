@@ -24,22 +24,19 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { ICategory, IProduct, IRackProduct } from "@/types/warehouse.types";
+    ICategory,
+    IProduct,
+    IRackProduct,
+    IWarehouse,
+} from "@/types/warehouse.types";
 import {
     ChevronLeft,
     ChevronRight,
     Cpu,
     Edit,
+    History,
     MoreHorizontal,
+    Move,
     Package,
     Search,
     Shirt,
@@ -50,9 +47,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ProductModal from "./ProductModal";
 import { removeProductFromRack } from "@/actions/rack.actions";
+import DeleteProductModal from "./DeleteProductModal";
+import MoveProductModal from "./MoveProductModal";
+import ProductHistoryModal from "./ProductHistoryModal";
 
 interface IProductsTableProps {
     organizationId: number;
+    warehouses: IWarehouse[];
     warehouseId: number;
     rackId: number;
     products: IRackProduct[];
@@ -63,6 +64,7 @@ interface IProductsTableProps {
 
 export default function ProductsTable({
     organizationId,
+    warehouses,
     warehouseId,
     rackId,
     allWarehouseProducts,
@@ -76,6 +78,9 @@ export default function ProductsTable({
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
 
+    const [moveProduct, setMoveProduct] = useState<IRackProduct | null>(null);
+    const [viewProductHistory, setViewProductHistory] =
+        useState<IRackProduct | null>(null);
     const [editingProduct, setEditingProduct] = useState<IRackProduct | null>(
         null,
     );
@@ -243,8 +248,8 @@ export default function ProductsTable({
                                             {product.quantity}
                                         </TableCell>
                                         <TableCell className="text-slate-500 text-sm">
-                                            {product.length}&quot; x{" "}
-                                            {product.width}&quot; x{" "}
+                                            {product.length}&quot; x
+                                            {product.width}&quot; x
                                             {product.height}&quot;
                                         </TableCell>
                                         <TableCell className="text-slate-500 text-sm">
@@ -277,9 +282,31 @@ export default function ProductsTable({
                                                                 )
                                                             }
                                                         >
-                                                            <Edit className="mr-2 h-4 w-4" />{" "}
+                                                            <Edit className="mr-2 h-4 w-4" />
                                                             Edit
                                                         </DropdownMenuItem>
+
+                                                        <DropdownMenuItem
+                                                            onClick={() =>
+                                                                setMoveProduct(
+                                                                    product,
+                                                                )
+                                                            }
+                                                        >
+                                                            <Move className="mr-2 h-4 w-4" />
+                                                            Move
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            onClick={() =>
+                                                                setViewProductHistory(
+                                                                    product,
+                                                                )
+                                                            }
+                                                        >
+                                                            <History className="mr-2 h-4 w-4" />
+                                                            History
+                                                        </DropdownMenuItem>
+
                                                         <DropdownMenuItem
                                                             className="text-red-600 focus:text-red-600"
                                                             onClick={() =>
@@ -360,35 +387,28 @@ export default function ProductsTable({
                 />
             )}
 
-            <AlertDialog
-                open={!!deletingProduct}
-                onOpenChange={(open) => !open && setDeletingProduct(null)}
-            >
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>
-                            Are you absolutely sure?
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                            This will permanently delete
-                            <b>{deletingProduct?.name}</b> from the warehouse.
-                            This action cannot be undone.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel disabled={isDeleting}>
-                            Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                            onClick={handleDelete}
-                            disabled={isDeleting}
-                            className="bg-red-600 hover:bg-red-700"
-                        >
-                            {isDeleting ? "Deleting..." : "Delete"}
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+            <DeleteProductModal
+                handleDelete={handleDelete}
+                isDeleting={isDeleting}
+                isOpen={!!deletingProduct}
+                onClose={() => !!deletingProduct && setDeletingProduct(null)}
+                productName={deletingProduct?.name}
+            />
+
+            <ProductHistoryModal
+                isOpen={!!viewProductHistory}
+                onClose={() =>
+                    !!viewProductHistory && setViewProductHistory(null)
+                }
+                product={viewProductHistory!}
+            />
+            <MoveProductModal
+                isOpen={!!moveProduct}
+                onClose={() => !!moveProduct && setMoveProduct(null)}
+                product={moveProduct!}
+                warehouses={warehouses}
+                currentRackId={rackId}
+            />
         </div>
     );
 }

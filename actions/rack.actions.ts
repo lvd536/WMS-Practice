@@ -226,7 +226,7 @@ export async function getWarehouseRacks(warehouseId: number) {
             .order("created_at", { ascending: false });
 
         if (error) throw new Error(error.message);
-
+        console.log(racks);
         return racks as IWarehouseRack[];
     } catch (err) {
         console.error("getWarehouseRacks error:", err);
@@ -359,6 +359,72 @@ export async function addExistingProductToRack(
         return { status: "success" };
     } catch (err) {
         console.error("addExistingProductToRack error:", err);
+        return {
+            status: "error",
+            message: err instanceof Error ? err.message : "Error",
+        };
+    }
+}
+
+export async function moveProduct(
+    placementId: number,
+    productId: number,
+    fromRackId: number,
+    toRackId: number,
+    quantityToMove: number,
+    currentPlacementQuantity: number,
+) {
+    try {
+        const supabase = await createClient();
+
+        if (quantityToMove === currentPlacementQuantity) {
+            const { error } = await supabase
+                .from("product_placements")
+                .update({ rack_id: toRackId })
+                .eq("id", placementId);
+
+            if (error) throw new Error(error.message);
+        } else {
+            const { error: reduceError } = await supabase
+                .from("product_placements")
+                .update({ quantity: currentPlacementQuantity - quantityToMove })
+                .eq("id", placementId);
+
+            if (reduceError) throw new Error(reduceError.message);
+
+            const { data: targetPlacement, error: checkError } = await supabase
+                .from("product_placements")
+                .select("id, quantity")
+                .eq("rack_id", toRackId)
+                .eq("product_id", productId)
+                .maybeSingle();
+
+            if (checkError) throw new Error(checkError.message);
+
+            if (targetPlacement) {
+                await supabase
+                    .from("product_placements")
+                    .update({
+                        quantity: targetPlacement.quantity + quantityToMove,
+                    })
+                    .eq("id", targetPlacement.id);
+            } else {
+                await supabase.from("product_placements").insert({
+                    rack_id: toRackId,
+                    product_id: productId,
+                    quantity: quantityToMove,
+                });
+            }
+        }
+
+        revalidatePath(
+            "/organizations/[organizationId]/warehouses/[warehouseId]/racks/[rackId]",
+            "page",
+        );
+
+        return { status: "success" };
+    } catch (err) {
+        console.error("moveProduct error:", err);
         return {
             status: "error",
             message: err instanceof Error ? err.message : "Error",
