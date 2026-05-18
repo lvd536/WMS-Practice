@@ -8,19 +8,6 @@ export interface IOrganization {
     updated_at?: string | null;
 }
 
-export type OrganizationRole = "owner" | "admin" | "member";
-
-export interface IOrganizationMember {
-    id: number;
-
-    organization_id: number;
-    user_id: string;
-
-    role: OrganizationRole;
-
-    created_at: string;
-}
-
 export type InvitationStatus = "pending" | "accepted" | "declined";
 
 export interface IOrganizationInvitation {

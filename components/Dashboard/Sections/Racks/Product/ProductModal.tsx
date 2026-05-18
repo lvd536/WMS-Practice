@@ -353,7 +353,7 @@ export default function ProductModal({
                                                                 key={p.id}
                                                                 value={p.id.toString()}
                                                             >
-                                                                {p.name} (SKU:{" "}
+                                                                {p.name} (SKU:
                                                                 {p.id})
                                                             </SelectItem>
                                                         ),

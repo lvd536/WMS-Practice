@@ -172,3 +172,14 @@ export interface IAuditLog {
     details?: Record<string, any> | null;
     created_at: string;
 }
+
+export interface IMember {
+    id: number;
+    role: "owner" | "admin" | "member";
+    profiles: {
+        id: string;
+        name: string;
+        avatar_path?: string | null;
+    };
+    created_at: string;
+}

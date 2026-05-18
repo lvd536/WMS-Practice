@@ -315,7 +315,7 @@ export default function ProductsTable({
                                                                 )
                                                             }
                                                         >
-                                                            <Trash2 className="mr-2 h-4 w-4" />{" "}
+                                                            <Trash2 className="mr-2 h-4 w-4" />
                                                             Delete
                                                         </DropdownMenuItem>
                                                     </DropdownMenuContent>
@@ -341,7 +341,7 @@ export default function ProductsTable({
                 <div className="flex items-center justify-between px-6 py-4 bg-[#f8fafc] border-t border-slate-200">
                     <div className="text-sm text-slate-500 font-medium">
                         Showing {totalItems === 0 ? 0 : startIndex + 1}-
-                        {Math.min(startIndex + itemsPerPage, totalItems)} of{" "}
+                        {Math.min(startIndex + itemsPerPage, totalItems)} of
                         {totalItems} items
                     </div>
                     <div className="flex items-center gap-2">
