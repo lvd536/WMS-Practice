@@ -130,6 +130,13 @@ export interface IInventoryMovement {
     created_at: string;
 }
 
+export interface IWarehouseInventoryMovement extends IInventoryMovement {
+    product_name: string;
+    product_sku: string;
+    from_rack_name?: string | null;
+    to_rack_name?: string | null;
+}
+
 export type NotificationType =
     | "info"
     | "success"
