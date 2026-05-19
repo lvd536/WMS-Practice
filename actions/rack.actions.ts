@@ -226,7 +226,6 @@ export async function getWarehouseRacks(warehouseId: number) {
             .order("created_at", { ascending: false });
 
         if (error) throw new Error(error.message);
-        console.log(racks);
         return racks as IWarehouseRack[];
     } catch (err) {
         console.error("getWarehouseRacks error:", err);
