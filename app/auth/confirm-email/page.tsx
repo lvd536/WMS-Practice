@@ -14,7 +14,7 @@ export default function ConfirmEmail() {
         >
             <Card className="max-w-md w-full">
                 <CardHeader className="flex flex-col items-center justify-center">
-                    <CardTitle className="font-bold text-2xl leading-[150%] tracking-[-0.03em] text-[#3525cd]">
+                    <CardTitle className="font-bold text-2xl leading-[150%] tracking-[-0.03em] text-primary">
                         WMS
                     </CardTitle>
                     <CardDescription>Email confirmation</CardDescription>

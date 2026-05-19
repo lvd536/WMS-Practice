@@ -53,17 +53,17 @@ export default async function Warehouse({ params }: IProps) {
         <section id="warehouse" className="p-6 md:p-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+                    <h1 className="text-3xl font-bold tracking-tight text-foreground">
                         {warehouse.name}
                     </h1>
                     <div className="flex items-center mt-2">
-                        <div className="flex items-center text-sm text-slate-600">
-                            <MapPin className="w-4 h-4 mr-1.5 text-slate-400" />
+                        <div className="flex items-center text-sm text-foreground">
+                            <MapPin className="w-4 h-4 mr-1.5 text-muted-foreground" />
                             {warehouse.address}
                         </div>
                         <div className="rounded-full w-1 h-1 bg-slate-300 mx-3" />
-                        <div className="flex items-center text-sm text-slate-600">
-                            <Box className="w-4 h-4 mr-1.5 text-slate-400" />
+                        <div className="flex items-center text-sm text-foreground">
+                            <Box className="w-4 h-4 mr-1.5 text-muted-foreground" />
                             Max Capacity: {warehouse.max_capacity} units
                         </div>
                     </div>
@@ -74,31 +74,31 @@ export default async function Warehouse({ params }: IProps) {
                 )}
             </div>
             <Tabs defaultValue="racks" className="w-full space-y-6">
-                <div className="border-b border-slate-200">
+                <div className="border-b border-border">
                     <TabsList className="h-12 w-full justify-start rounded-none bg-transparent p-0 gap-8">
                         <TabsTrigger
                             value="racks"
-                            className="relative h-12 rounded-none border-b-2 border-transparent bg-transparent px-1 pb-3 pt-2 text-sm font-medium text-slate-500 transition-all hover:text-slate-700 data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:shadow-none"
+                            className="relative h-12 rounded-none border-b-2 border-transparent bg-transparent px-1 pb-3 pt-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:border-indigo-600 data-[state=active]:text-primary data-[state=active]:shadow-none"
                         >
                             <Layers className="w-4 h-4 mr-2" />
                             Warehouse Racks
                             <Badge
                                 variant="secondary"
-                                className="ml-2 bg-slate-100 text-slate-600 group-data-[state=active]:bg-indigo-50 group-data-[state=active]:text-indigo-600"
+                                className="ml-2 bg-muted text-foreground group-data-[state=active]:bg-primary/10 group-data-[state=active]:text-primary"
                             >
                                 {racks.length}
                             </Badge>
                         </TabsTrigger>
                         <TabsTrigger
                             value="product_movements"
-                            className="relative h-12 rounded-none border-b-2 border-transparent bg-transparent px-1 pb-3 pt-2 text-sm font-medium text-slate-500 transition-all hover:text-slate-700 data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 data-[state=active]:shadow-none"
+                            className="relative h-12 rounded-none border-b-2 border-transparent bg-transparent px-1 pb-3 pt-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:border-indigo-600 data-[state=active]:text-primary data-[state=active]:shadow-none"
                         >
                             <History className="w-4 h-4 mr-2" />
                             Product Movements
                             {inventoryMovements.length > 0 && (
                                 <Badge
                                     variant="secondary"
-                                    className="ml-2 bg-slate-100 text-slate-600 group-data-[state=active]:bg-indigo-50 group-data-[state=active]:text-indigo-600"
+                                    className="ml-2 bg-muted text-foreground group-data-[state=active]:bg-primary/10 group-data-[state=active]:text-primary"
                                 >
                                     {inventoryMovements.length}
                                 </Badge>
@@ -120,14 +120,14 @@ export default async function Warehouse({ params }: IProps) {
                             ))}
                         </div>
                     ) : (
-                        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-dashed border-slate-300">
-                            <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mb-4">
-                                <Layers className="w-8 h-8 text-slate-300" />
+                        <div className="flex flex-col items-center justify-center py-20 bg-card rounded-xl border border-dashed border-border">
+                            <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                                <Layers className="w-8 h-8 text-muted-foreground" />
                             </div>
-                            <h3 className="text-lg font-medium text-slate-900">
+                            <h3 className="text-lg font-medium text-foreground">
                                 No racks found
                             </h3>
-                            <p className="text-slate-500 text-sm mt-1">
+                            <p className="text-muted-foreground text-sm mt-1">
                                 This warehouse doesn&lsquo;t have any racks yet.
                             </p>
                         </div>
@@ -138,26 +138,26 @@ export default async function Warehouse({ params }: IProps) {
                     value="product_movements"
                     className="mt-0 outline-none"
                 >
-                    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                    <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
                         <Table>
-                            <TableHeader className="bg-slate-50/50">
+                            <TableHeader className="bg-muted/50">
                                 <TableRow>
-                                    <TableHead className="font-semibold text-slate-700">
+                                    <TableHead className="font-semibold text-foreground">
                                         Product
                                     </TableHead>
-                                    <TableHead className="font-semibold text-slate-700">
+                                    <TableHead className="font-semibold text-foreground">
                                         Route
                                     </TableHead>
-                                    <TableHead className="font-semibold text-slate-700">
+                                    <TableHead className="font-semibold text-foreground">
                                         Qty
                                     </TableHead>
-                                    <TableHead className="font-semibold text-slate-700">
+                                    <TableHead className="font-semibold text-foreground">
                                         Type
                                     </TableHead>
-                                    <TableHead className="font-semibold text-slate-700">
+                                    <TableHead className="font-semibold text-foreground">
                                         Date
                                     </TableHead>
-                                    <TableHead className="text-right font-semibold text-slate-700">
+                                    <TableHead className="text-right font-semibold text-foreground">
                                         Note
                                     </TableHead>
                                 </TableRow>
@@ -167,14 +167,14 @@ export default async function Warehouse({ params }: IProps) {
                                     inventoryMovements.map((m) => (
                                         <TableRow
                                             key={m.id}
-                                            className="hover:bg-slate-50/50 transition-colors"
+                                            className="hover:bg-muted/50 transition-colors"
                                         >
                                             <TableCell>
                                                 <div className="flex flex-col">
-                                                    <span className="font-semibold text-slate-900 leading-none">
+                                                    <span className="font-semibold text-foreground leading-none">
                                                         {m.product_name}
                                                     </span>
-                                                    <span className="text-[10px] text-slate-400 font-mono mt-1">
+                                                    <span className="text-[10px] text-muted-foreground font-mono mt-1">
                                                         {m.product_sku ||
                                                             `ID: ${m.product_id}`}
                                                     </span>
@@ -185,21 +185,21 @@ export default async function Warehouse({ params }: IProps) {
                                                     <span
                                                         className={`px-2 py-0.5 rounded border text-[11px] ${
                                                             m.from_rack_name
-                                                                ? "bg-white text-slate-600 border-slate-200"
-                                                                : "text-[10px] bg-slate-100 text-slate-400 border-transparent italic"
+                                                                ? "bg-card text-foreground border-border"
+                                                                : "text-[10px] bg-muted text-muted-foreground border-transparent italic"
                                                         }`}
                                                     >
                                                         {m.from_rack_name ||
                                                             "External"}
                                                     </span>
 
-                                                    <ArrowRightLeft className="w-3 h-3 text-slate-300" />
+                                                    <ArrowRightLeft className="w-3 h-3 text-muted-foreground" />
 
                                                     <span
                                                         className={`px-2 py-0.5 rounded border text-[11px] ${
                                                             m.to_rack_name
-                                                                ? "bg-indigo-50 text-indigo-700 border-indigo-100 font-medium"
-                                                                : "text-[10px] bg-slate-100 text-slate-400 border-transparent italic"
+                                                                ? "bg-primary/10 text-primary border-primary/20 font-medium"
+                                                                : "text-[10px] bg-muted text-muted-foreground border-transparent italic"
                                                         }`}
                                                     >
                                                         {m.to_rack_name ||
@@ -208,7 +208,7 @@ export default async function Warehouse({ params }: IProps) {
                                                 </div>
                                             </TableCell>
                                             <TableCell>
-                                                <span className="font-bold text-slate-700">
+                                                <span className="font-bold text-foreground">
                                                     {m.quantity}
                                                 </span>
                                             </TableCell>
@@ -220,7 +220,7 @@ export default async function Warehouse({ params }: IProps) {
                                                             ? "bg-emerald-100 text-emerald-800"
                                                             : m.movement_type ===
                                                                 "move"
-                                                              ? "bg-blue-100 text-blue-800"
+                                                              ? "bg-primary/10 text-blue-800"
                                                               : m.movement_type ===
                                                                   "writeoff"
                                                                 ? "bg-red-100 text-red-800"
@@ -230,7 +230,7 @@ export default async function Warehouse({ params }: IProps) {
                                                     {m.movement_type}
                                                 </span>
                                             </TableCell>
-                                            <TableCell className="text-slate-500 text-xs whitespace-nowrap">
+                                            <TableCell className="text-muted-foreground text-xs whitespace-nowrap">
                                                 {new Date(
                                                     m.created_at,
                                                 ).toLocaleString([], {
@@ -240,7 +240,7 @@ export default async function Warehouse({ params }: IProps) {
                                                     minute: "2-digit",
                                                 })}
                                             </TableCell>
-                                            <TableCell className="text-right text-slate-400 italic text-[11px] max-w-37.5 truncate">
+                                            <TableCell className="text-right text-muted-foreground italic text-[11px] max-w-37.5 truncate">
                                                 {m.note || "—"}
                                             </TableCell>
                                         </TableRow>
@@ -249,7 +249,7 @@ export default async function Warehouse({ params }: IProps) {
                                     <TableRow>
                                         <TableCell
                                             colSpan={6}
-                                            className="h-32 text-center text-slate-400"
+                                            className="h-32 text-center text-muted-foreground"
                                         >
                                             No movements recorded for this
                                             warehouse.

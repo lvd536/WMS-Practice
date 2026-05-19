@@ -33,36 +33,36 @@ export default function ProductsDataTable({
     onDelete,
 }: ProductsDataTableProps) {
     return (
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             <Table>
-                <TableHeader className="bg-[#edf2fa] hover:bg-[#edf2fa]">
+                <TableHeader className="bg-muted hover:bg-muted">
                     <TableRow className="border-b-slate-200">
-                        <TableHead className="w-75 font-semibold text-slate-700">
+                        <TableHead className="w-75 font-semibold text-foreground">
                             PRODUCT NAME
                         </TableHead>
 
-                        <TableHead className="font-semibold text-slate-700">
+                        <TableHead className="font-semibold text-foreground">
                             CATEGORY
                         </TableHead>
 
-                        <TableHead className="font-semibold text-slate-700">
+                        <TableHead className="font-semibold text-foreground">
                             QUANTITY
                         </TableHead>
 
-                        <TableHead className="font-semibold text-slate-700">
+                        <TableHead className="font-semibold text-foreground">
                             DIMENSIONS (L X W X H)
                         </TableHead>
 
-                        <TableHead className="font-semibold text-slate-700">
+                        <TableHead className="font-semibold text-foreground">
                             WEIGHT
                         </TableHead>
 
-                        <TableHead className="font-semibold text-slate-700">
+                        <TableHead className="font-semibold text-foreground">
                             CREATE DATE
                         </TableHead>
 
                         {canEdit && (
-                            <TableHead className="text-right font-semibold text-slate-700">
+                            <TableHead className="text-right font-semibold text-foreground">
                                 ACTIONS
                             </TableHead>
                         )}
@@ -87,7 +87,7 @@ export default function ProductsDataTable({
                         <TableRow>
                             <td
                                 colSpan={7}
-                                className="h-32 text-center text-slate-500"
+                                className="h-32 text-center text-muted-foreground"
                             >
                                 No products found matching your criteria.
                             </td>

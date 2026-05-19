@@ -34,19 +34,19 @@ export default function ProductTableRow({
     const { icon: Icon, color } = getCategoryStyles(category?.name);
 
     return (
-        <TableRow className="hover:bg-slate-50/50">
+        <TableRow className="hover:bg-muted/50">
             <TableCell>
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-indigo-100 bg-indigo-50">
-                        <Icon className="h-5 w-5 text-indigo-600" />
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-primary/20 bg-primary/10">
+                        <Icon className="h-5 w-5 text-primary" />
                     </div>
 
                     <div className="flex flex-col">
-                        <span className="font-semibold text-slate-900">
+                        <span className="font-semibold text-foreground">
                             {product.name}
                         </span>
 
-                        <span className="text-xs uppercase text-slate-500">
+                        <span className="text-xs uppercase text-muted-foreground">
                             SKU: PRD-{product.id}
                         </span>
                     </div>
@@ -61,19 +61,19 @@ export default function ProductTableRow({
                 </span>
             </TableCell>
 
-            <TableCell className="font-semibold text-slate-700">
+            <TableCell className="font-semibold text-foreground">
                 {product.quantity}
             </TableCell>
 
-            <TableCell className="text-sm text-slate-500">
+            <TableCell className="text-sm text-muted-foreground">
                 {product.length} x {product.width} x {product.height}
             </TableCell>
 
-            <TableCell className="text-sm text-slate-500">
+            <TableCell className="text-sm text-muted-foreground">
                 {product.weight} lbs
             </TableCell>
 
-            <TableCell className="text-sm text-slate-500">
+            <TableCell className="text-sm text-muted-foreground">
                 {formatProductDate(product.created_at)}
             </TableCell>
 

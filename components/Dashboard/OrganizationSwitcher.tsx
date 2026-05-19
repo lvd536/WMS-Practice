@@ -130,12 +130,12 @@ export function OrganizationSwitcher() {
                                     <span className="truncate font-medium text-slate-100">
                                         {activeOrganization.name}
                                     </span>
-                                    <span className="truncate text-xs text-slate-400">
+                                    <span className="truncate text-xs text-muted-foreground">
                                         Current organization
                                     </span>
                                 </div>
 
-                                <ChevronsUpDown className="ml-auto text-slate-400" />
+                                <ChevronsUpDown className="ml-auto text-muted-foreground" />
                             </SidebarMenuButton>
                         </DropdownMenuTrigger>
 
@@ -156,7 +156,7 @@ export function OrganizationSwitcher() {
                             side={isMobile ? "bottom" : "right"}
                             sideOffset={6}
                         >
-                            <DropdownMenuLabel className="text-xs text-slate-400">
+                            <DropdownMenuLabel className="text-xs text-muted-foreground">
                                 Organizations
                             </DropdownMenuLabel>
 
@@ -217,7 +217,7 @@ export function OrganizationSwitcher() {
                                 focus:bg-slate-800
                                 hover:bg-slate-800
                                 transition-colors
-                                text-slate-300
+                                text-muted-foreground
                             "
                             >
                                 <div
@@ -228,12 +228,12 @@ export function OrganizationSwitcher() {
                                     bg-slate-800/60
                                 "
                                 >
-                                    <Plus className="size-4 text-slate-300" />
+                                    <Plus className="size-4 text-muted-foreground" />
                                 </div>
 
                                 <button
                                     type="button"
-                                    className="font-medium text-slate-300"
+                                    className="font-medium text-muted-foreground"
                                     onClick={() => setIsModalOpen(true)}
                                 >
                                     Add organization

@@ -19,26 +19,26 @@ export default function ProductHistoryRow({
     movement,
 }: ProductHistoryRowProps) {
     return (
-        <TableRow className="transition-colors hover:bg-slate-50/50">
+        <TableRow className="transition-colors hover:bg-muted/50">
             <TableCell>
                 <div className="flex items-center gap-2 text-sm">
                     <span
                         className={`rounded border px-2 py-0.5 text-[11px] ${
                             movement.from_rack_name
-                                ? "border-slate-200 bg-white text-slate-600"
-                                : "border-transparent bg-slate-100 text-[10px] italic text-slate-400"
+                                ? "border-border bg-card text-foreground"
+                                : "border-transparent bg-muted text-[10px] italic text-muted-foreground"
                         }`}
                     >
                         {movement.from_rack_name || "External"}
                     </span>
 
-                    <ArrowRightLeft className="h-3 w-3 text-slate-300" />
+                    <ArrowRightLeft className="h-3 w-3 text-muted-foreground" />
 
                     <span
                         className={`rounded border px-2 py-0.5 text-[11px] ${
                             movement.to_rack_name
-                                ? "border-indigo-100 bg-indigo-50 font-medium text-indigo-700"
-                                : "border-transparent bg-slate-100 text-[10px] italic text-slate-400"
+                                ? "border-primary/20 bg-primary/10 font-medium text-primary"
+                                : "border-transparent bg-muted text-[10px] italic text-muted-foreground"
                         }`}
                     >
                         {movement.to_rack_name || "External"}
@@ -47,7 +47,7 @@ export default function ProductHistoryRow({
             </TableCell>
 
             <TableCell>
-                <span className="font-bold text-slate-700">
+                <span className="font-bold text-foreground">
                     {movement.quantity}
                 </span>
             </TableCell>
@@ -62,11 +62,11 @@ export default function ProductHistoryRow({
                 </span>
             </TableCell>
 
-            <TableCell className="whitespace-nowrap text-xs text-slate-500">
+            <TableCell className="whitespace-nowrap text-xs text-muted-foreground">
                 {formatMovementDate(movement.created_at)}
             </TableCell>
 
-            <TableCell className="max-w-37.5 truncate text-right text-[11px] italic text-slate-400">
+            <TableCell className="max-w-37.5 truncate text-right text-[11px] italic text-muted-foreground">
                 {movement.note || "—"}
             </TableCell>
         </TableRow>

@@ -23,7 +23,7 @@ export default function Profile() {
             id="profile"
             className="w-full flex flex-col gap-8 items-center justify-between mt-8 container mx-auto"
         >
-            <Card className="relative w-full h-90 pt-0! shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] border-solid border-[#c7c4d8]">
+            <Card className="relative w-full h-90 pt-0! shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] border-solid border-border">
                 <div className="w-full h-1/2 bg-stone-400">
                     {user.background_path && (
                         <Image
@@ -51,26 +51,26 @@ export default function Profile() {
                 </div>
             </Card>
             <div className="w-full grid grid-cols-2 gap-8">
-                <Card className="p-8 shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] border-solid border-[#c7c4d8]">
+                <Card className="p-8 shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] border-solid border-border">
                     <h1 className="flex items-center gap-2 font-semibold text-xl leading-[140%] text-foreground border-b-[#c7c4d8] border-b border-solid pb-2">
-                        <User className="w-5 stroke-[#3525cd]" /> Personal Info
+                        <User className="w-5 stroke-primary" /> Personal Info
                     </h1>
                     <FieldGroup>
                         <Field>
-                            <FieldLabel className="leading-[150%] tracking-wider uppercase text-[#464555]">
+                            <FieldLabel className="leading-[150%] tracking-wider uppercase text-muted-foreground">
                                 Full name
                             </FieldLabel>
                             <FieldContent>{user.name}</FieldContent>
                         </Field>
                         <Field>
-                            <FieldLabel className="leading-[150%] tracking-wider uppercase text-[#464555]">
+                            <FieldLabel className="leading-[150%] tracking-wider uppercase text-muted-foreground">
                                 Email
                             </FieldLabel>
                             <FieldContent>{email}</FieldContent>
                         </Field>
                         {user.about && (
                             <Field>
-                                <FieldLabel className="leading-[150%] tracking-wider uppercase text-[#464555]">
+                                <FieldLabel className="leading-[150%] tracking-wider uppercase text-muted-foreground">
                                     About
                                 </FieldLabel>
                                 <FieldContent>{user.about}</FieldContent>
@@ -78,14 +78,14 @@ export default function Profile() {
                         )}
                     </FieldGroup>
                 </Card>
-                <Card className="p-8 shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] border-solid border-[#c7c4d8]">
+                <Card className="p-8 shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] border-solid border-border">
                     <h1 className="flex items-center gap-2 font-semibold text-xl leading-[140%] text-foreground border-b-[#c7c4d8] border-b border-solid pb-2">
-                        <SquareUser className="w-5 stroke-[#a04100]" />
+                        <SquareUser className="w-5 stroke-secondary" />
                         Contact Info
                     </h1>
                     {user.phone && (
                         <Field>
-                            <FieldLabel className="leading-[150%] tracking-wider uppercase text-[#464555]">
+                            <FieldLabel className="leading-[150%] tracking-wider uppercase text-muted-foreground">
                                 Mobile Phone
                             </FieldLabel>
                             <FieldContent className="flex flex-row gap-1 items-center">

@@ -74,7 +74,7 @@ export default function InviteMemberForm({
                 <Button
                     type="submit"
                     disabled={isLoading}
-                    className="bg-indigo-600 hover:bg-indigo-700"
+                    className="bg-primary hover:bg-primary/90"
                 >
                     {isLoading ? "Sending Invite..." : "Send Invite"}
                 </Button>

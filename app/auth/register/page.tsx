@@ -118,7 +118,7 @@ export default function Register() {
     return (
         <Card className="w-full sm:max-w-md mx-auto mt-10">
             <CardHeader className="flex flex-col items-center justify-center">
-                <CardTitle className="font-bold text-2xl leading-[150%] tracking-[-0.03em] text-[#3525cd]">
+                <CardTitle className="font-bold text-2xl leading-[150%] tracking-[-0.03em] text-primary">
                     WMS
                 </CardTitle>
                 <CardDescription>Create account</CardDescription>
@@ -140,7 +140,7 @@ export default function Register() {
                                         aria-invalid={fieldState.invalid}
                                         placeholder="John Doe"
                                         autoComplete="off"
-                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-border"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -165,7 +165,7 @@ export default function Register() {
                                         aria-invalid={fieldState.invalid}
                                         placeholder="example@gmail.com"
                                         autoComplete="off"
-                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-border"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -190,7 +190,7 @@ export default function Register() {
                                         aria-invalid={fieldState.invalid}
                                         placeholder="●●●●●●●●"
                                         autoComplete="off"
-                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-border"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -215,7 +215,7 @@ export default function Register() {
                                         aria-invalid={fieldState.invalid}
                                         placeholder="●●●●●●●●"
                                         autoComplete="off"
-                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-[#c7c4d8]"
+                                        className="border px-4 py-3 h-fit! rounded-lg border-solid border-border"
                                     />
                                     {fieldState.invalid && (
                                         <FieldError
@@ -239,7 +239,7 @@ export default function Register() {
                 <Button
                     type="button"
                     variant="ghost"
-                    className="font-medium text-sm text-center text-[#464555] mx-auto"
+                    className="font-medium text-sm text-center text-muted-foreground mx-auto"
                     onClick={() => router.push("/auth/login")}
                 >
                     <ArrowLeft />

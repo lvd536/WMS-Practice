@@ -64,36 +64,36 @@ export default async function Rack({ params }: IProps) {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                 <div>
                     <div className="flex items-center gap-3">
-                        <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+                        <h1 className="text-3xl font-bold tracking-tight text-foreground">
                             {rack.name}
                         </h1>
-                        <span className="flex items-center px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold border border-indigo-100">
+                        <span className="flex items-center px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold border border-primary/20">
                             <Hash className="w-3 h-3 mr-1" />
                             {rack.code}
                         </span>
                     </div>
 
-                    <div className="flex flex-wrap items-center mt-3 gap-y-2 text-sm text-slate-600">
+                    <div className="flex flex-wrap items-center mt-3 gap-y-2 text-sm text-foreground">
                         <div className="flex items-center">
-                            <Warehouse className="w-4 h-4 mr-1.5 text-slate-400" />
+                            <Warehouse className="w-4 h-4 mr-1.5 text-muted-foreground" />
                             {warehouse.name}
                         </div>
                         <div className="hidden md:block rounded-full w-1 h-1 bg-slate-300 mx-3" />
                         <div className="flex items-center">
-                            <Scale className="w-4 h-4 mr-1.5 text-slate-400" />
+                            <Scale className="w-4 h-4 mr-1.5 text-muted-foreground" />
                             Weight:
                             <span
-                                className={`font-medium ${(rack.current_weight ?? 0) > rack.max_weight ? "text-red-500" : "text-slate-900"} ml-1`}
+                                className={`font-medium ${(rack.current_weight ?? 0) > rack.max_weight ? "text-red-500" : "text-foreground"} ml-1`}
                             >
                                 {rack.current_weight} / {rack.max_weight} kg
                             </span>
                         </div>
                         <div className="hidden md:block rounded-full w-1 h-1 bg-slate-300 mx-3" />
                         <div className="flex items-center">
-                            <Box className="w-4 h-4 mr-1.5 text-slate-400" />
+                            <Box className="w-4 h-4 mr-1.5 text-muted-foreground" />
                             Volume:
                             <span
-                                className={`font-medium ${(rack.current_volume ?? 0) > rack.max_volume ? "text-red-500" : "text-slate-900"} ml-1`}
+                                className={`font-medium ${(rack.current_volume ?? 0) > rack.max_volume ? "text-red-500" : "text-foreground"} ml-1`}
                             >
                                 {rack.current_volume} / {rack.max_volume} m³
                             </span>
@@ -101,8 +101,8 @@ export default async function Rack({ params }: IProps) {
                     </div>
 
                     {rack.description && (
-                        <p className="mt-2 text-sm text-slate-500 flex items-start">
-                            <FileText className="w-4 h-4 mr-1.5 text-slate-400 shrink-0 mt-0.5" />
+                        <p className="mt-2 text-sm text-muted-foreground flex items-start">
+                            <FileText className="w-4 h-4 mr-1.5 text-muted-foreground shrink-0 mt-0.5" />
                             {rack.description}
                         </p>
                     )}

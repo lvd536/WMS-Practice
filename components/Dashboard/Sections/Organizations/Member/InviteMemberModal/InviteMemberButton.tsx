@@ -14,7 +14,7 @@ export default function InviteMemberButton({
         <Button
             onClick={onClick}
             variant="outline"
-            className="h-10 border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm"
+            className="h-10 border-border text-foreground hover:bg-muted shadow-sm"
         >
             <UserPlus className="mr-2 h-4 w-4" />
             Invite Member

@@ -32,7 +32,7 @@ export default function Organizations() {
                     <h1 className="text-2xl font-bold tracking-tight text-foreground">
                         Organizations
                     </h1>
-                    <p className="text-slate-500 mt-1">
+                    <p className="text-muted-foreground mt-1">
                         Select an organization or create a new one to get
                         started.
                     </p>
@@ -41,10 +41,10 @@ export default function Organizations() {
             </div>
 
             <div className="relative max-w-md">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
                     type="search"
-                    className="pl-10 h-10 border-slate-200"
+                    className="pl-10 h-10 border-border"
                     placeholder="Search organizations..."
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
@@ -58,7 +58,7 @@ export default function Organizations() {
                     ))}
                 </div>
             ) : (
-                <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded-xl text-slate-400">
+                <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded-xl text-muted-foreground">
                     <p>No organizations found</p>
                 </div>
             )}

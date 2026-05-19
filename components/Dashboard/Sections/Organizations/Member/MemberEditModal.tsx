@@ -50,7 +50,7 @@ export default function MemberEditModal({ member, isOpen, onClose }: IProps) {
                         <SelectItem value="member">Member</SelectItem>
                     </SelectContent>
                 </Select>
-                <Button onClick={handleSave} className="w-full bg-indigo-600">
+                <Button onClick={handleSave} className="w-full bg-primary">
                     Save Changes
                 </Button>
             </DialogContent>

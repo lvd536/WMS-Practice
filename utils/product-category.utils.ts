@@ -6,7 +6,7 @@ export function getCategoryStyles(categoryName?: string) {
     if (name.includes("electronic")) {
         return {
             icon: Cpu,
-            color: "bg-blue-100 text-blue-700",
+            color: "bg-primary/10 text-blue-700",
         };
     }
 
@@ -26,6 +26,6 @@ export function getCategoryStyles(categoryName?: string) {
 
     return {
         icon: Package,
-        color: "bg-slate-100 text-slate-700",
+        color: "bg-muted text-foreground",
     };
 }

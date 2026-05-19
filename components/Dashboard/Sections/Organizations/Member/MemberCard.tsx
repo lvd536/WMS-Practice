@@ -38,7 +38,7 @@ export default function MemberCard({
     if (!user || !user.id) return null;
 
     return (
-        <div className="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl hover:border-indigo-200 transition-colors">
+        <div className="flex items-center justify-between p-4 bg-card border border-border rounded-xl hover:border-indigo-200 transition-colors">
             <div className="flex items-center gap-3">
                 <Avatar className="w-10 h-10">
                     <AvatarImage src={member.profiles?.avatar_path ?? ""} />
@@ -47,10 +47,10 @@ export default function MemberCard({
                     </AvatarFallback>
                 </Avatar>
                 <div>
-                    <p className="font-semibold text-slate-900">
+                    <p className="font-semibold text-foreground">
                         {member.profiles?.name ?? "Unknown"}
                     </p>
-                    <p className="text-xs text-slate-500 capitalize">
+                    <p className="text-xs text-muted-foreground capitalize">
                         {member.role}
                     </p>
                 </div>

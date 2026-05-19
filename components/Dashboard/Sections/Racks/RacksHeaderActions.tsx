@@ -19,7 +19,7 @@ export default function RacksHeaderActions({
         <>
             <Button
                 onClick={() => setIsAddOpen(true)}
-                className="h-10 bg-indigo-600 hover:bg-indigo-700 shadow-md"
+                className="h-10 bg-primary hover:bg-primary/90 shadow-md"
             >
                 <Plus className="mr-2 h-4 w-4" /> Add Rack
             </Button>

@@ -23,8 +23,8 @@ export default function ProductsPagination({
     onPageChange,
 }: ProductsPaginationProps) {
     return (
-        <div className="flex items-center justify-between border border-slate-200 bg-[#f8fafc] px-6 py-4">
-            <div className="text-sm font-medium text-slate-500">
+        <div className="flex items-center justify-between border border-border bg-muted px-6 py-4 rounded-xl">
+            <div className="text-sm font-medium text-muted-foreground">
                 Showing {totalItems === 0 ? 0 : startIndex + 1}-
                 {Math.min(startIndex + itemsPerPage, totalItems)} of{" "}
                 {totalItems} items
@@ -34,7 +34,7 @@ export default function ProductsPagination({
                 <Button
                     variant="outline"
                     size="icon"
-                    className="h-8 w-8 text-slate-500"
+                    className="h-8 w-8 text-muted-foreground"
                     onClick={() =>
                         onPageChange((prev) => Math.max(1, prev - 1))
                     }
@@ -46,7 +46,7 @@ export default function ProductsPagination({
                 <Button
                     variant="outline"
                     size="icon"
-                    className="h-8 w-8 text-slate-500"
+                    className="h-8 w-8 text-muted-foreground"
                     onClick={() =>
                         onPageChange((prev) => Math.min(totalPages, prev + 1))
                     }

@@ -28,19 +28,19 @@ export default function OrganizationListItem({ organization }: IProps) {
                         <Button
                             variant="ghost"
                             size="icon"
-                            className="absolute top-4 right-4 z-10 hover:bg-slate-100 rounded-full"
+                            className="absolute top-4 right-4 z-10 hover:bg-muted rounded-full"
                             onClick={() => setIsEditOpen(true)}
                         >
-                            <Edit2 className="w-4 h-4 text-slate-500" />
+                            <Edit2 className="w-4 h-4 text-muted-foreground" />
                         </Button>
                     ))}
 
                 <div className="flex items-start justify-between">
-                    <Van className="border w-12 h-12 bg-[#e5eeff] rounded-lg border-solid border-[rgba(199,196,216,0.3)] stroke-[#3525cd] p-2.5 shrink-0" />
+                    <Van className="border w-12 h-12 bg-accent rounded-lg border-solid border-[rgba(199,196,216,0.3)] stroke-primary p-2.5 shrink-0" />
                     {loading ? (
                         <Skeleton className="w-18.75 h-5.25 px-3 py-1 rounded-full ml-1 mr-10" />
                     ) : (
-                        <p className="bg-[rgba(79,70,229,0.15)] font-semibold text-[13px] leading-[100%] tracking-wider uppercase text-[#3525cd] px-3 py-1 rounded-full ml-1 mr-10">
+                        <p className="bg-[rgba(79,70,229,0.15)] font-semibold text-[13px] leading-[100%] tracking-wider uppercase text-primary px-3 py-1 rounded-full ml-1 mr-10">
                             {role}
                         </p>
                     )}
@@ -49,7 +49,7 @@ export default function OrganizationListItem({ organization }: IProps) {
                     {organization.name}
                 </h2>
                 {organization.description && (
-                    <p className="w-full leading-[160%] text-[#464555] mt-2 pb-6 border-b-[rgba(199,196,216,0.3)] border-b border-solid wrap-break-word">
+                    <p className="w-full leading-[160%] text-muted-foreground mt-2 pb-6 border-b-[rgba(199,196,216,0.3)] border-b border-solid wrap-break-word">
                         {organization.description}
                     </p>
                 )}
