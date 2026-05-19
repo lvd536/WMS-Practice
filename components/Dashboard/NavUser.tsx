@@ -1,6 +1,14 @@
 "use client";
 
-import { ChevronsUpDown, BadgeCheck, Bell, LogOut, Pencil } from "lucide-react";
+import {
+    ChevronsUpDown,
+    BadgeCheck,
+    Bell,
+    LogOut,
+    Pencil,
+    Sun,
+    Moon,
+} from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import {
     DropdownMenu,
@@ -23,8 +31,10 @@ import EditProfileModal from "../EditProfileModal";
 import Notifications from "../Notifications";
 import { Link } from "next-view-transitions";
 import { createClient } from "@/lib/supabase/client";
+import { useThemeStore } from "@/stores/theme.store";
 
 export default function NavUser() {
+    const { theme, toggleTheme } = useThemeStore();
     const { user: profile, clearUser } = useUserStore();
     const { user, logout } = useAuthStore();
     const { isMobile } = useSidebar();
@@ -132,6 +142,13 @@ export default function NavUser() {
                                     Notifications
                                 </DropdownMenuItem>
                             </Notifications>
+                            <DropdownMenuItem
+                                className="focus:bg-sidebar-accent focus:text-sidebar-accent-foreground"
+                                onSelect={toggleTheme}
+                            >
+                                {theme === "light" ? <Sun /> : <Moon />}
+                                Switch Theme
+                            </DropdownMenuItem>
                         </DropdownMenuGroup>
 
                         <DropdownMenuSeparator className="bg-sidebar-border" />

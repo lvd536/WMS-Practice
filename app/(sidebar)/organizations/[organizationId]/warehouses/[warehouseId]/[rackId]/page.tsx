@@ -8,7 +8,7 @@ import {
 } from "@/actions/warehouse.actions";
 import { getCurrentUserRole } from "@/actions/user.actions";
 import { Box, FileText, Hash, Scale, Warehouse } from "lucide-react";
-import ProductsTable from "@/components/Dashboard/Sections/Racks/Product/ProductsTable";
+import ProductsTable from "@/components/Dashboard/Sections/Racks/Product/ProductsTable/ProductsTable";
 import RackHeaderActions from "@/components/Dashboard/Sections/Racks/RackHeaderActions";
 import { getRackProducts, getWarehouseRack } from "@/actions/rack.actions";
 

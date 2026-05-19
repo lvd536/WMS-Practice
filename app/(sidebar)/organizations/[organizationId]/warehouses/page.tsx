@@ -3,8 +3,8 @@
 import { getOrganizationMembers } from "@/actions/member.actions";
 import { getCurrentUserRole } from "@/actions/user.actions";
 import { getAllWarehouses } from "@/actions/warehouse.actions";
-import InviteMemberModal from "@/components/Dashboard/Sections/Organizations/InviteMemberModal";
-import MemberCard from "@/components/Dashboard/Sections/Organizations/MemberCard";
+import InviteMemberModal from "@/components/Dashboard/Sections/Organizations/Member/InviteMemberModal/InviteMemberModal";
+import MemberCard from "@/components/Dashboard/Sections/Organizations/Member/MemberCard";
 import WarehouseCard from "@/components/Dashboard/Sections/Warehouses/WarehouseCard";
 import WarehousesHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehousesHeaderActions";
 import { Badge } from "@/components/ui/badge";
