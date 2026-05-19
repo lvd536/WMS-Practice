@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import OrganizationModal from "./OrganizationModal";
+import OrganizationModal from "./OrganizationModal/OrganizationModal";
 
 export default function OrganizationsHeaderActions() {
     const [isAddOpen, setIsAddOpen] = useState(false);

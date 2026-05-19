@@ -5,7 +5,7 @@ import { useOrganizationsStore } from "@/stores/organizations.store";
 import { IOrganization } from "@/types/organization.types";
 import { Van, Edit2 } from "lucide-react";
 import { useState } from "react";
-import OrganizationModal from "./OrganizationModal";
+import OrganizationModal from "./OrganizationModal/OrganizationModal";
 import { useUserRole } from "@/hooks/useUserRole";
 import { Skeleton } from "@/components/ui/skeleton";
 
