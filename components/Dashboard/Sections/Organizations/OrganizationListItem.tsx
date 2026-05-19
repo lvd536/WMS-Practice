@@ -21,7 +21,7 @@ export default function OrganizationListItem({ organization }: IProps) {
 
     return (
         <>
-            <li className="flex flex-col relative p-6 backdrop-blur-[20px] shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] bg-white border rounded-xl border-solid border-[rgba(199,196,216,0.5)]">
+            <li className="flex flex-col relative p-6 backdrop-blur-[20px] shadow-[0_10px_30px_0_rgba(0,0,0,0.04)] bg-card border rounded-xl border-solid border-[rgba(199,196,216,0.5)]">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[rgba(53,37,205,0.05)] rounded-[0_1100px_0_9999px]" />
                 {role === "admin" ||
                     (role === "owner" && (
