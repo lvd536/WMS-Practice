@@ -4,12 +4,13 @@ import { Building2, CircleUser, Warehouse } from "lucide-react";
 import { useUserStore } from "@/stores/user.store";
 import { useOrganizationsStore } from "@/stores/organizations.store";
 import MainCard from "@/components/Dashboard/Sections/Main/MainCard";
+import DashboardSkeleton from "@/components/Skeletons/DashboardSkeleton";
 
 export default function Home() {
     const user = useUserStore((s) => s.user);
     const organization = useOrganizationsStore((s) => s.currentOrganization);
 
-    if (!user) return null;
+    if (!user) return <DashboardSkeleton />;
 
     return (
         <div className="flex flex-col w-full h-screen items-center container mt-4">

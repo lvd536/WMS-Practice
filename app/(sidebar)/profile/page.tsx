@@ -1,5 +1,6 @@
 "use client";
 import EditProfileModal from "@/components/EditProfileModal";
+import ProfileSkeleton from "@/components/Skeletons/ProfileSkeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import {
@@ -17,7 +18,7 @@ export default function Profile() {
     const { user } = useUserStore();
     const email = useAuthStore((s) => s.user?.email);
 
-    if (!user || !user.name || !email) return null;
+    if (!user || !user.name || !email) return <ProfileSkeleton />;
     return (
         <section
             id="profile"

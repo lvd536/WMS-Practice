@@ -9,10 +9,7 @@ import WarehouseCard from "@/components/Dashboard/Sections/Warehouses/WarehouseC
 import WarehousesHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehousesHeaderActions";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import {
-    Warehouse,
-    Users,
-} from "lucide-react";
+import { Warehouse, Users } from "lucide-react";
 
 interface IProps {
     params: Promise<{ organizationId: number }>;

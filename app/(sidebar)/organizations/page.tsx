@@ -1,6 +1,7 @@
 "use client";
 import OrganizationListItem from "@/components/Dashboard/Sections/Organizations/OrganizationListItem";
 import OrganizationsHeaderActions from "@/components/Dashboard/Sections/Organizations/OrganizationsHeaderActions";
+import OrganizationsSkeleton from "@/components/Skeletons/OrganizationsSkeleton";
 import { Input } from "@/components/ui/input";
 import { useOrganizationsStore } from "@/stores/organizations.store";
 import { Search } from "lucide-react";
@@ -23,7 +24,7 @@ export default function Organizations() {
             : organizations
         : [];
 
-    if (!organizations) return null;
+    if (!organizations) return <OrganizationsSkeleton />;
 
     return (
         <section id="organizations" className="p-6 md:p-8 space-y-8">
