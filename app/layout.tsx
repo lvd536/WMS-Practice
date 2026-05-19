@@ -5,7 +5,6 @@ import { ViewTransitions } from "next-view-transitions";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useThemeStore } from "@/stores/theme.store";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 const geistSans = Geist({
