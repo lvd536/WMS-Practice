@@ -5,7 +5,7 @@ import { IWarehouseRack } from "@/types/warehouse.types";
 import { Link } from "next-view-transitions";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import RackModal from "./RackModal";
+import RackModal from "./RackModal/RackModal";
 
 interface IProps {
     warehouseId: number;

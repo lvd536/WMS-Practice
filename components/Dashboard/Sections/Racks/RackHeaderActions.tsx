@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import ProductModal from "./Product/ProductModal";
+import ProductModal from "./Product/ProductModal/ProductModal";
 import { ICategory, IProduct } from "@/types/warehouse.types";
 
 export default function RackHeaderActions({

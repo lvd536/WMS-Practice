@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import RackModal from "./RackModal";
+import RackModal from "./RackModal/RackModal";
 
 export default function RacksHeaderActions({
     warehouseId,
