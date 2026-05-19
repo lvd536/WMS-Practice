@@ -38,7 +38,7 @@ import {
 
 import { useOrganizationsStore } from "@/stores/organizations.store";
 import { useEffect, useState } from "react";
-import OrganizationModal from "./Sections/Organizations/OrganizationModal";
+import OrganizationModal from "./Sections/Organizations/OrganizationModal/OrganizationModal";
 
 const ORGANIZATION_ICONS = [
     Building2,

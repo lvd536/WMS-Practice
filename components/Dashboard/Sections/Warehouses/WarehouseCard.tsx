@@ -5,7 +5,7 @@ import { IWarehouse } from "@/types/warehouse.types";
 import { Link } from "next-view-transitions";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import WarehouseModal from "./WarehouseModal";
+import WarehouseModal from "./WarehouseModal/WarehouseModal";
 
 interface IProps {
     warehouse: IWarehouse;

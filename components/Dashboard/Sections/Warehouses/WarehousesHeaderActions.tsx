@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import WarehouseModal from "./WarehouseModal";
+import WarehouseModal from "./WarehouseModal/WarehouseModal";
 
 export default function WarehousesHeaderActions({
     orgId,
