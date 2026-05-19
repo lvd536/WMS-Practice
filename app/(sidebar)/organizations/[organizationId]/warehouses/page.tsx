@@ -5,23 +5,11 @@ import { getCurrentUserRole } from "@/actions/user.actions";
 import { getAllWarehouses } from "@/actions/warehouse.actions";
 import InviteMemberModal from "@/components/Dashboard/Sections/Organizations/InviteMemberModal";
 import MemberCard from "@/components/Dashboard/Sections/Organizations/MemberCard";
-import RackCard from "@/components/Dashboard/Sections/Racks/RackCard";
 import WarehouseCard from "@/components/Dashboard/Sections/Warehouses/WarehouseCard";
 import WarehousesHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehousesHeaderActions";
 import { Badge } from "@/components/ui/badge";
-import {
-    Table,
-    TableHeader,
-    TableRow,
-    TableHead,
-    TableBody,
-    TableCell,
-} from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
-    Layers,
-    ArrowRightLeft,
-    History,
     Warehouse,
     Users,
 } from "lucide-react";
