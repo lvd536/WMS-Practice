@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
     Dialog,
@@ -36,12 +36,15 @@ export default function MoveProductDialog({
     const [isLoading, setIsLoading] = useState(false);
     const [targetRacks, setTargetRacks] = useState<IWarehouseRack[]>([]);
 
-    const loadRacks = async (warehouseId: number) => {
-        const racks = await getWarehouseRacks(warehouseId);
-        if (Array.isArray(racks)) {
-            setTargetRacks(racks.filter((r) => r.id !== currentRackId));
-        }
-    };
+    const loadRacks = useCallback(
+        async (warehouseId: number) => {
+            const racks = await getWarehouseRacks(warehouseId);
+            if (Array.isArray(racks)) {
+                setTargetRacks(racks.filter((r) => r.id !== currentRackId));
+            }
+        },
+        [currentRackId],
+    );
 
     const handleSubmit = async (data: {
         warehouse_id: number;
