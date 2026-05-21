@@ -1,15 +1,19 @@
 "use server";
 
+import { getOrganizationInventoryMovements } from "@/actions/logs.actions";
 import { getOrganizationMembers } from "@/actions/member.actions";
 import { getCurrentUserRole } from "@/actions/user.actions";
 import { getAllWarehouses } from "@/actions/warehouse.actions";
+import MovementActivityChart from "@/components/Dashboard/Analytics/MovementActivityChart";
+import WriteOffChart from "@/components/Dashboard/Analytics/WriteOffChart";
 import InviteMemberModal from "@/components/Dashboard/Sections/Organizations/Member/InviteMemberModal/InviteMemberModal";
 import MemberCard from "@/components/Dashboard/Sections/Organizations/Member/MemberCard";
 import WarehouseCard from "@/components/Dashboard/Sections/Warehouses/WarehouseCard";
 import WarehousesHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehousesHeaderActions";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Warehouse, Users } from "lucide-react";
+import { getMovementDataPoint } from "@/utils/analytics.utils";
+import { Warehouse, Users, BarChart3 } from "lucide-react";
 
 interface IProps {
     params: Promise<{ organizationId: number }>;
@@ -19,15 +23,21 @@ export default async function Warehouses({ params }: IProps) {
     const { organizationId } = await params;
     const orgId = Number(organizationId);
 
-    const [warehouses, userRole, members] = await Promise.all([
+    const [warehouses, userRole, members, globalMovements] = await Promise.all([
         getAllWarehouses(orgId),
         getCurrentUserRole(orgId),
         getOrganizationMembers(orgId),
+        getOrganizationInventoryMovements(orgId),
     ]);
 
     const canEdit = userRole === "owner" || userRole === "admin";
 
-    if ("error" in warehouses || "error" in members) return null;
+    if (
+        "error" in warehouses ||
+        "error" in members ||
+        "error" in globalMovements
+    )
+        return null;
 
     return (
         <section id="warehouses" className="p-6 md:p-8 space-y-8">
@@ -67,6 +77,13 @@ export default async function Warehouses({ params }: IProps) {
                             </Badge>
                         </TabsTrigger>
                         <TabsTrigger
+                            value="analytics"
+                            className="relative h-12 rounded-none border-b-2 border-transparent bg-transparent px-1 pb-3 pt-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:border-indigo-600 data-[state=active]:text-primary data-[state=active]:shadow-none"
+                        >
+                            <BarChart3 className="w-4 h-4 mr-2" />
+                            Global Analytics
+                        </TabsTrigger>
+                        <TabsTrigger
                             value="Members"
                             className="relative h-12 rounded-none border-b-2 border-transparent bg-transparent px-1 pb-3 pt-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground data-[state=active]:border-indigo-600 data-[state=active]:text-primary data-[state=active]:shadow-none"
                         >
@@ -101,6 +118,28 @@ export default async function Warehouses({ params }: IProps) {
                             </p>
                         </div>
                     )}
+                </TabsContent>
+
+                <TabsContent
+                    value="analytics"
+                    className="space-y-6 outline-none"
+                >
+                    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                        <div className="xl:col-span-2">
+                            <MovementActivityChart
+                                data={getMovementDataPoint(globalMovements)}
+                                title="Company-wide Operations"
+                                description="Daily active movement across all warehouses"
+                            />
+                        </div>
+
+                        <div className="xl:col-span-1">
+                            <WriteOffChart
+                                data={getMovementDataPoint(globalMovements)}
+                                title="Loss Tracking"
+                            />
+                        </div>
+                    </div>
                 </TabsContent>
 
                 <TabsContent value="Members">

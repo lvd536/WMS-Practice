@@ -135,7 +135,7 @@ export interface IProductInventoryMovement extends IInventoryMovement {
     to_rack_name?: string | null;
 }
 
-export interface IWarehouseInventoryMovement extends IProductInventoryMovement {
+export interface IDetailedInventoryMovement extends IProductInventoryMovement {
     product_name: string;
     product_sku: string;
 }

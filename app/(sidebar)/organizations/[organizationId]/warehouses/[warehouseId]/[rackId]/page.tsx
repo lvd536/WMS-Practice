@@ -11,6 +11,10 @@ import { Box, FileText, Hash, Scale, Warehouse } from "lucide-react";
 import ProductsTable from "@/components/Dashboard/Sections/Racks/Product/ProductsTable/ProductsTable";
 import RackHeaderActions from "@/components/Dashboard/Sections/Racks/RackHeaderActions";
 import { getRackProducts, getWarehouseRack } from "@/actions/rack.actions";
+import WriteOffChart from "@/components/Dashboard/Analytics/WriteOffChart";
+import OccupancyGauge from "@/components/Dashboard/Analytics/OccupancyGauge";
+import { getRackMovements } from "@/actions/logs.actions";
+import { getMovementDataPoint } from "@/utils/analytics.utils";
 
 interface IProps {
     params: Promise<{
@@ -35,6 +39,7 @@ export default async function Rack({ params }: IProps) {
         userRole,
         rack,
         warehouses,
+        rackMovements,
     ] = await Promise.all([
         getWarehouseInfo(wId),
         getRackProducts(rId),
@@ -43,6 +48,7 @@ export default async function Rack({ params }: IProps) {
         getCurrentUserRole(orgId),
         getWarehouseRack(rId),
         getAllWarehouses(orgId),
+        getRackMovements(rId),
     ]);
 
     const canEdit = userRole === "owner" || userRole === "admin";
@@ -53,7 +59,8 @@ export default async function Rack({ params }: IProps) {
         "error" in allWarehouseProducts ||
         "error" in categories ||
         "error" in rack ||
-        "error" in warehouses
+        "error" in warehouses ||
+        "error" in rackMovements
     )
         return (
             <div className="p-8 text-red-500">Failed to load rack data.</div>
@@ -119,16 +126,31 @@ export default async function Rack({ params }: IProps) {
                 )}
             </div>
 
-            <ProductsTable
-                organizationId={orgId}
-                warehouseId={wId}
-                rackId={rId}
-                products={rackProducts}
-                allWarehouseProducts={allWarehouseProducts}
-                categories={categories}
-                canEdit={canEdit}
-                warehouses={warehouses}
-            />
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <div className="lg:col-span-7 xl:col-span-8 order-2 lg:order-1">
+                    <ProductsTable
+                        organizationId={orgId}
+                        warehouseId={wId}
+                        rackId={rId}
+                        products={rackProducts}
+                        allWarehouseProducts={allWarehouseProducts}
+                        categories={categories}
+                        canEdit={canEdit}
+                        warehouses={warehouses}
+                    />
+                </div>
+
+                <div className="lg:col-span-5 xl:col-span-4 space-y-6 order-1 lg:order-2">
+                    <OccupancyGauge
+                        currentWeight={rack.current_weight || 0}
+                        maxWeight={rack.max_weight}
+                        currentVolume={rack.current_volume || 0}
+                        maxVolume={rack.max_volume}
+                    />
+
+                    <WriteOffChart data={getMovementDataPoint(rackMovements)} />
+                </div>
+            </div>
         </section>
     );
 }
