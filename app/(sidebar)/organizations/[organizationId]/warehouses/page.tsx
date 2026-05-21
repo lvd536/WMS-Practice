@@ -8,7 +8,7 @@ import MovementActivityChart from "@/components/Dashboard/Analytics/MovementActi
 import WriteOffChart from "@/components/Dashboard/Analytics/WriteOffChart";
 import InviteMemberModal from "@/components/Dashboard/Sections/Organizations/Member/InviteMemberModal/InviteMemberModal";
 import MemberCard from "@/components/Dashboard/Sections/Organizations/Member/MemberCard";
-import WarehouseCard from "@/components/Dashboard/Sections/Warehouses/WarehouseCard";
+import WarehouseCard from "@/components/Dashboard/Sections/Warehouses/Warehouse/WarehouseCard";
 import WarehousesHeaderActions from "@/components/Dashboard/Sections/Warehouses/WarehousesHeaderActions";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";

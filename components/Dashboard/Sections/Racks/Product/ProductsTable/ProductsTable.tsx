@@ -75,7 +75,7 @@ export default function ProductsTable({
     } = useProductModals();
 
     return (
-        <div className="mt-8 space-y-4">
+        <div className="space-y-4">
             <ProductsToolbar
                 categories={categories}
                 searchQuery={searchQuery}
