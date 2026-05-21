@@ -27,11 +27,11 @@ import {
 } from "../ui/sidebar";
 import { useUserStore } from "@/stores/user.store";
 import { useAuthStore } from "@/stores/auth.store";
-import EditProfileModal from "../EditProfileModal";
 import Notifications from "../Notifications";
 import { Link } from "next-view-transitions";
 import { createClient } from "@/lib/supabase/client";
 import { useThemeStore } from "@/stores/theme.store";
+import EditProfileModal from "../Profile/EditProfileModal/EditProfileModal";
 
 export default function NavUser() {
     const { theme, toggleTheme } = useThemeStore();
